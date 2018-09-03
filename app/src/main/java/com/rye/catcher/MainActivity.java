@@ -1,16 +1,21 @@
 package com.rye.catcher;
 
-import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
+import android.widget.TextView;
 
-import com.rye.common.Common;
+import com.rye.common.app.BaseActivity;
 
-public class MainActivity extends AppCompatActivity {
+import butterknife.BindView;
+
+public class MainActivity extends BaseActivity {
+   @BindView(R.id.txt_test)
+    TextView txt_test;
+    @Override
+    protected int getContentLayoutId() {
+        return R.layout.activity_main;
+    }
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-        new Common();
+    protected void initWidget() {
+        txt_test.setText("天地无极");
     }
 }

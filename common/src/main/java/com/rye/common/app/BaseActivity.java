@@ -5,14 +5,14 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 
-import com.rye.common.R;
-
 import java.util.List;
+
+import butterknife.ButterKnife;
 
 /**
  * Created by ZZG on 2018/8/28.
  */
-public abstract  class Activity extends AppCompatActivity {
+public abstract  class BaseActivity extends AppCompatActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         //在界面未初始化之前调用的初始化窗口
@@ -62,7 +62,7 @@ public abstract  class Activity extends AppCompatActivity {
      * 初始化控件
      */
     protected void initWidget(){
-
+        ButterKnife.bind(this);//封装
     }
 
     /**
@@ -85,8 +85,8 @@ public abstract  class Activity extends AppCompatActivity {
         List<Fragment> fragments=getSupportFragmentManager().getFragments();
         if (fragments!=null&&fragments.size()>0){
         for (Fragment fragment:fragments) {
-                if (fragment instanceof com.rye.common.app.Fragment){
-                    if (((com.rye.common.app.Fragment) fragment).onBackPressed()){
+                if (fragment instanceof BaseFragment){
+                    if (((BaseFragment) fragment).onBackPressed()){
                         return;//如果拦截就交给fragment处理，否则就走下面的finish
                     }
                 }
