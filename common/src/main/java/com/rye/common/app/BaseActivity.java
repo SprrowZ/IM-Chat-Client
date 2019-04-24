@@ -15,28 +15,20 @@ import butterknife.ButterKnife;
 public abstract  class BaseActivity extends AppCompatActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
         //在界面未初始化之前调用的初始化窗口
         initWindows();
         if (initArgs(getIntent().getExtras())){
             //得到界面Id并设置到Activity界面中
-          int layId=getContentLayoutId();
-          setContentView(layId);
-          initBefore();
-          initWidget();
-          initData();
+            int layId=getContentLayoutId();
+            setContentView(layId);
+            initWidget();
+            initData();
         }else {
             finish();
         }
-        super.onCreate(savedInstanceState);
 
     }
-
-    /**
-     * 初始化控件之前
-     */
-   protected  void initBefore(){
-
-   }
     /**
      * 初始化窗口
      */

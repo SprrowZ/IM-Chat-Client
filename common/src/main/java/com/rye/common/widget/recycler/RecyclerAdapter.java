@@ -81,11 +81,11 @@ public abstract class RecyclerAdapter<Data>
         root.setOnLongClickListener(this);
         //将view绑定viewHolder，就可以通过tag取到viewHolder
         //设置View的Tag为ViewHolder，进行双向绑定
-        root.setTag(R.id.tag_recycler_holder);
+        root.setTag(R.id.tag_recycler_holder,holder);
         holder.unbinder = ButterKnife.bind(holder, root);//将holder绑定到根布局
         //绑定callback
         holder.callback = this;
-        return null;
+        return holder;
     }
 
     /**
@@ -122,6 +122,24 @@ public abstract class RecyclerAdapter<Data>
         //只需要更新插入
         notifyItemInserted(mDataList.size() - 1);
         //notifyDataSetChanged();这个是更新整个列表
+    }
+
+    /**
+     * ViewHolder内部数据更新
+     * @param data
+     * @param holder
+     */
+    @Override
+    public void update(Data data, ViewHolder<Data> holder) {
+        //得到当前ViewHolder的坐标
+        int pos=holder.getAdapterPosition();
+        if (pos>=0){
+            //进行数据的移除与更新
+            mDataList.remove(pos);
+            mDataList.add(pos,data);
+            //通知数据更新
+            notifyItemChanged(pos);
+        }
     }
 
     /**
@@ -245,8 +263,25 @@ public abstract class RecyclerAdapter<Data>
          */
         public void updataData(Data data) {
             if (this.callback != null) {
-                this.callback.updata(data, this);
+                this.callback.update(data, this);
             }
         }
     }
+
+    /**
+     * 如果不用类继承接口实现的话，那么setAdapterListener的时候，就必须实现两个方法
+     * @param <Data>
+     */
+    public  static abstract class AdapterListenerImpl<Data> implements AdapterListener<Data>{
+        @Override
+        public void onItemClick(ViewHolder holder, Data data) {
+
+        }
+
+        @Override
+        public void onItemLongClick(ViewHolder holder, Data data) {
+
+        }
+    }
+
 }

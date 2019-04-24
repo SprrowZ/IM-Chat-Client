@@ -16,6 +16,13 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+    defaultConfig {
+        multiDexEnabled true
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
 }
 
 dependencies {
@@ -26,7 +33,7 @@ dependencies {
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'com.android.support.test:runner:1.0.2'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
-
+    implementation 'com.android.support:multidex:1.0.1'
     implementation project(':common')
     implementation "com.android.support:recyclerview-v7:$rootProject.ext.supportVersion"
     implementation "com.jakewharton:butterknife:$rootProject.ext.butterknifeVersion"
@@ -36,5 +43,7 @@ dependencies {
     implementation "net.qiujuer.genius:res:$rootProject.ext.geniusVersion"
     implementation "de.hdodenhof:circleimageview:$rootProject.ext.circleimageviewVersion"
     implementation "com.github.bumptech.glide:glide:$rootProject.ext.glideVersion"
-
+    annotationProcessor "com.github.bumptech.glide:compiler:$rootProject.ext.glideVersion"
+    implementation 'com.yanzhenjie:permission:2.0.0-rc11'
+    implementation 'com.github.yalantis:ucrop:2.2.2'
 }
