@@ -45,21 +45,6 @@ public abstract class RecyclerAdapter<Data>
         this.mListener = listener;
     }
 
-    @Override
-    public int getItemViewType(int position) {
-        return getItemViewType(position, mDataList.get(position));
-    }
-
-    /**
-     * 得到布局的类型
-     *
-     * @param position 坐标
-     * @param data     当前的数据
-     * @return XML文件的Id，用于创建viewHolder
-     */
-    @LayoutRes
-    protected abstract int getItemViewType(int position, Data data);
-
     /**
      * 创建一个ViewHolder
      *
@@ -74,7 +59,7 @@ public abstract class RecyclerAdapter<Data>
         LayoutInflater inflater = LayoutInflater.from(parent.getContext());
         //把xml id为viewType的文件初始化为一个rootView
         View root = inflater.inflate(viewType, parent, false);
-        //通过子类必须实现的方法，得到一个viewHolder
+        //通过子类必须实现的方法，得到一个viewHolder,viewType强制指定为xml的id
         ViewHolder<Data> holder = onCreateViewHolder(root, viewType);
         //设置点击事件
         root.setOnClickListener(this);
@@ -88,14 +73,6 @@ public abstract class RecyclerAdapter<Data>
         return holder;
     }
 
-    /**
-     * 得到一个新的ViewHolder
-     *
-     * @param root     根布局
-     * @param viewType 布局类型，实际上就是XML文件的ID
-     * @return
-     */
-    protected abstract ViewHolder<Data> onCreateViewHolder(View root, int viewType);
 
     /**
      * 绑定数据到一个Holder上
@@ -111,11 +88,41 @@ public abstract class RecyclerAdapter<Data>
         holder.bind(data);
     }
 
+    @Override
+    public int getItemViewType(int position) {
+        return getItemViewType(position, mDataList.get(position));
+    }
+
 
     @Override
     public int getItemCount() {
         return mDataList.size();
     }
+
+
+    /**
+     * 得到布局的类型
+     *
+     * @param position 坐标
+     * @param data     当前的数据
+     * @return XML文件的Id，用于创建viewHolder
+     */
+    @LayoutRes
+    protected abstract int getItemViewType(int position, Data data);
+
+
+    /**
+     * 得到一个新的ViewHolder
+     *
+     * @param root     根布局
+     * @param viewType 布局类型，实际上就是XML文件的ID
+     * @return
+     */
+    protected abstract ViewHolder<Data> onCreateViewHolder(View root, int viewType);
+
+
+
+
 
     public void add(Data data) {
         mDataList.add(data);

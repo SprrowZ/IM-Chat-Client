@@ -12,7 +12,7 @@ import butterknife.ButterKnife;
 import butterknife.Unbinder;
 
 /**
- * Created by ZZG on 2018/8/28.
+ * Created by ShuQin
  */
 public abstract class BaseFragment extends android.support.v4.app.Fragment {
     protected View mRoot;

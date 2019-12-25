@@ -10,7 +10,7 @@ import java.util.List;
 import butterknife.ButterKnife;
 
 /**
- * Created by ZZG on 2018/8/28.
+ * Created by ShuQin
  */
 public abstract  class BaseActivity extends AppCompatActivity {
     @Override
@@ -73,7 +73,8 @@ public abstract  class BaseActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        //如果一个界面有多个fragment，一层层掉，就不能直接finish掉了
+        //如果一个界面有多个fragment，一层层掉，就不能直接finish掉了/
+        // 会走Fragment中onCreateView里的mRoot移除逻辑
         List<Fragment> fragments=getSupportFragmentManager().getFragments();
         if (fragments!=null&&fragments.size()>0){
         for (Fragment fragment:fragments) {
