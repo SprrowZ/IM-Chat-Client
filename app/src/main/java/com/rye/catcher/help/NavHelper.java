@@ -9,7 +9,7 @@ import android.util.SparseArray;
 /**
  * Created at 2018/10/22.
  *用于解决首页底部按钮切换Fragment的工具类
- * @author Zzg
+ *
  */
 public class NavHelper<T> {
     // 所有的Tab集合
@@ -83,7 +83,7 @@ public class NavHelper<T> {
             oldTab = currentTab;
             if (oldTab == tab) {
                 // 如果说当前的Tab就是点击的Tab，
-                // 那么我们不做处理
+                // 那么我们不做处理---d底下这个方法就是二次点击可能进行某些操作，属于扩展方法。
                 notifyTabReselect(tab);
                 return;
             }

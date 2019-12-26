@@ -125,6 +125,11 @@ public class MainActivity extends BaseActivity implements
         return mNavHelper.performClickMenu(item.getItemId());
 }
 
+    /**
+     * 切换底部的操作
+     * @param newTab
+     * @param oldTab
+     */
     @Override
     public void onTabChanged(NavHelper.Tab<Integer> newTab, NavHelper.Tab<Integer> oldTab) {
        mTitle.setText(newTab.extra);
