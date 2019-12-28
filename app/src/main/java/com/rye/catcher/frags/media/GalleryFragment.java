@@ -1,24 +1,24 @@
 package com.rye.catcher.frags.media;
 
-import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.design.widget.BottomSheetDialog;
-import android.support.design.widget.BottomSheetDialogFragment;
+
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.loader.app.LoaderManager;
+
+import com.google.android.material.bottomsheet.BottomSheetDialog;
+import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 import com.rye.catcher.R;
 
-import com.rye.common.tools.UiTool;
-import com.rye.common.widget.GalleryView;
-
-import net.qiujuer.genius.ui.Ui;
+import com.rye.catcher.common.tools.UiTool;
+import com.rye.catcher.common.widget.GalleryView;
 
 
 public class GalleryFragment extends BottomSheetDialogFragment implements GalleryView.SelectedChangeListener {
@@ -26,7 +26,7 @@ public class GalleryFragment extends BottomSheetDialogFragment implements Galler
     private GalleryView galleryView;
     private OnSelectedListener mListener;
 
-    public GalleryFragment( ){
+    public GalleryFragment(){
 
     }
 
@@ -49,7 +49,7 @@ public class GalleryFragment extends BottomSheetDialogFragment implements Galler
     @Override
     public void onStart() {
         super.onStart();
-        galleryView.setup(getLoaderManager(),this);
+        galleryView.setup(LoaderManager.getInstance(this),this);
     }
 
     @Override
@@ -87,7 +87,7 @@ public class GalleryFragment extends BottomSheetDialogFragment implements Galler
     }
 
 
-    private static class TransStatusBottomSheetDialog extends BottomSheetDialog{
+    private static class TransStatusBottomSheetDialog extends BottomSheetDialog {
 
         public TransStatusBottomSheetDialog(@NonNull Context context) {
             super(context);

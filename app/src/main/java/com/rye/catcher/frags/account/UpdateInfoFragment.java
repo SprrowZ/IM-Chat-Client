@@ -9,9 +9,9 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.rye.catcher.R;
 import com.rye.catcher.frags.media.GalleryFragment;
-import com.rye.common.app.BaseFragment;
-import com.rye.common.app.zApplication;
-import com.rye.common.widget.PortraitView;
+import com.rye.catcher.common.app.BaseFragment;
+import com.rye.catcher.common.app.zApplication;
+import com.rye.catcher.common.widget.PortraitView;
 import com.yalantis.ucrop.UCrop;
 
 import java.io.File;
@@ -22,7 +22,7 @@ import butterknife.OnClick;
 import static android.app.Activity.RESULT_OK;
 
 
-public class UpdateInfoFragment extends BaseFragment {
+public class UpdateInfoFragment extends BaseFragment implements GalleryFragment.OnSelectedListener {
     @BindView(R.id.im_portrait)
     PortraitView portraitView;
     @Override
@@ -37,24 +37,7 @@ public class UpdateInfoFragment extends BaseFragment {
 
     @OnClick(R.id.im_portrait)
     void onPortraitClick(){
-        new GalleryFragment().setListener(new GalleryFragment.OnSelectedListener() {
-            @Override
-            public void onSelectedImage(String path) {
-
-                UCrop.Options options=new UCrop.Options();
-                //压缩格式设置为PNG
-                options.setCompressionFormat(Bitmap.CompressFormat.PNG);
-                options.setCompressionQuality(96);
-                //获取头像缓存地址
-                File dPath= zApplication.getPortraitTmpFile();
-                //设置属性
-                UCrop.of(Uri.fromFile(new File(path)),Uri.fromFile(dPath))
-                        .withAspectRatio(1,1)
-                        .withMaxResultSize(520,520)
-                        .withOptions(options)
-                        .start(getActivity());
-            }
-        })
+        new GalleryFragment().setListener(this)
         //show的时候建议使用getChildFragmentManager
         .show(getChildFragmentManager(),GalleryFragment.class.getName());
     }
@@ -84,5 +67,22 @@ public class UpdateInfoFragment extends BaseFragment {
                 .load(uri)
                 .apply(options)
                 .into(portraitView);
+    }
+
+    @Override
+    public void onSelectedImage(String path) {
+        UCrop.Options options=new UCrop.Options();
+        //压缩格式设置为PNG
+        options.setCompressionFormat(Bitmap.CompressFormat.PNG);
+        options.setCompressionQuality(96);
+        //获取头像缓存地址
+        // TODO: 2019/12/28 把头像的地址生成从Application中抽离处理。放到FileUtils中去
+        File dPath= zApplication.getPortraitTmpFile();
+        //设置属性
+        UCrop.of(Uri.fromFile(new File(path)),Uri.fromFile(dPath))
+                .withAspectRatio(1,1)
+                .withMaxResultSize(520,520)
+                .withOptions(options)
+                .start(getActivity());
     }
 }

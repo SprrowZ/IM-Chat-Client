@@ -1,17 +1,14 @@
 package com.rye.catcher.help.permissions;
 
+import android.app.AlertDialog;
 import android.content.Context;
-import android.content.DialogInterface;
-import android.support.v7.app.AlertDialog;
-import android.text.TextUtils;
+
 import android.widget.Toast;
 
-import com.rye.catcher.R;
-import com.rye.catcher.frags.main.ContactFragment;
 import com.yanzhenjie.permission.Action;
 import com.yanzhenjie.permission.AndPermission;
 import com.yanzhenjie.permission.Permission;
-import com.yanzhenjie.permission.Setting;
+
 
 import java.util.List;
 

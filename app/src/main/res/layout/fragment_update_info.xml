@@ -5,7 +5,7 @@
     android:layout_height="match_parent"
     tools:context=".frags.account.UpdateInfoFragment">
 
- <com.rye.common.widget.PortraitView
+ <com.rye.catcher.common.widget.PortraitView
      android:id="@+id/im_portrait"
      android:layout_width="@dimen/portraitMaxSize"
      android:layout_height="@dimen/portraitMaxSize"

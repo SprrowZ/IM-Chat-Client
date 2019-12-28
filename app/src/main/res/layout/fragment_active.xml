@@ -5,13 +5,13 @@
     android:layout_height="match_parent"
     tools:context=".frags.main.ActiveFragment">
 
- <com.rye.common.widget.GalleryView
+ <com.rye.catcher.common.widget.GalleryView
      android:id="@+id/galleyView"
      android:layout_width="match_parent"
      android:layout_height="match_parent"
      android:padding="1dp"
      >
 
- </com.rye.common.widget.GalleryView>
+ </com.rye.catcher.common.widget.GalleryView>
 
 </FrameLayout>

@@ -2,13 +2,12 @@ package com.rye.catcher.activities;
 
 
 
-import android.app.Fragment;
 import android.content.Context;
 import android.content.Intent;
 
 import com.rye.catcher.R;
 import com.rye.catcher.frags.account.UpdateInfoFragment;
-import com.rye.common.app.BaseActivity;
+import com.rye.catcher.common.app.BaseActivity;
 
 public class AccountActivity extends BaseActivity {
     private UpdateInfoFragment mCurFragment=new UpdateInfoFragment();
@@ -34,6 +33,7 @@ public class AccountActivity extends BaseActivity {
         super.initWidget();
         getSupportFragmentManager()
                 .beginTransaction()
+                .setCustomAnimations(R.anim.bottom_dialog_anim,0)//添加进场动画
                 .add(R.id.lay_container,mCurFragment)
                 .commit();
     }

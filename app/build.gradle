@@ -8,7 +8,7 @@ android {
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode rootProject.ext.versionCode
         versionName rootProject.ext.versionName
-        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
     buildTypes {
         release {
@@ -27,21 +27,25 @@ android {
 
 dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
-    implementation "com.android.support:appcompat-v7:$rootProject.ext.supportVersion"
-    implementation "com.android.support:design:$rootProject.ext.supportVersion"
-    implementation 'com.android.support.constraint:constraint-layout:1.1.2'
 
-    implementation 'com.android.support:multidex:1.0.1'
-    implementation project(':common')
-    implementation "com.android.support:recyclerview-v7:$rootProject.ext.supportVersion"
+    implementation 'androidx.constraintlayout:constraintlayout:1.1.3'
+    implementation 'androidx.multidex:multidex:2.0.0'
+
+    //factory已经引用了common了
+    implementation project(':factory')
+    //这个应该也是可以替换的吧
     implementation "com.jakewharton:butterknife:$rootProject.ext.butterknifeVersion"
     annotationProcessor "com.jakewharton:butterknife-compiler:$rootProject.ext.butterknifeVersion"
 
-    implementation "net.qiujuer.genius:ui:$rootProject.ext.geniusVersion"
-    implementation "net.qiujuer.genius:res:$rootProject.ext.geniusVersion"
-    implementation "de.hdodenhof:circleimageview:$rootProject.ext.circleimageviewVersion"
-    implementation "com.github.bumptech.glide:glide:$rootProject.ext.glideVersion"
+
+    implementation 'androidx.legacy:legacy-support-v4:1.0.0'
     annotationProcessor "com.github.bumptech.glide:compiler:$rootProject.ext.glideVersion"
+    //申请权限的三方框架，我们先用Google提供的EasyPermission来实现权限申请
     implementation 'com.yanzhenjie:permission:2.0.0-rc11'
+
     implementation 'com.github.yalantis:ucrop:2.2.2'
+
+    implementation "pub.devrel:easypermissions:$rootProject.ext.easyPMVersion"
+    compile project(path: ':common')
+
 }

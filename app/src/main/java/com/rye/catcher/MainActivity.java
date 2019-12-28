@@ -1,10 +1,7 @@
 package com.rye.catcher;
 
 import android.graphics.drawable.Drawable;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.design.widget.BottomNavigationView;
-import android.support.design.widget.NavigationView;
+
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -13,19 +10,21 @@ import android.view.animation.AnticipateOvershootInterpolator;
 import android.widget.FrameLayout;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.target.SimpleTarget;
-import com.bumptech.glide.request.target.Target;
-import com.bumptech.glide.request.target.ViewTarget;
 import com.bumptech.glide.request.transition.Transition;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.rye.catcher.activities.AccountActivity;
 import com.rye.catcher.frags.main.ActiveFragment;
 import com.rye.catcher.frags.main.ContactFragment;
 import com.rye.catcher.frags.main.GroupFragment;
 import com.rye.catcher.help.NavHelper;
 import com.rye.catcher.help.permissions.PermissionUtils;
-import com.rye.common.app.BaseActivity;
-import com.rye.common.widget.PortraitView;
+import com.rye.catcher.common.app.BaseActivity;
+import com.rye.catcher.common.widget.PortraitView;
 import com.yanzhenjie.permission.Permission;
 
 import net.qiujuer.genius.ui.Ui;
