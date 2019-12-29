@@ -1,4 +1,4 @@
-package com.rye.catcher.utils;
+package com.rye.common.utils;
 
 import java.io.File;
 import java.io.FileInputStream;

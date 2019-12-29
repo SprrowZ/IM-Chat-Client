@@ -7,7 +7,7 @@ import android.content.Intent;
 
 import com.rye.catcher.R;
 import com.rye.catcher.frags.account.UpdateInfoFragment;
-import com.rye.catcher.common.app.BaseActivity;
+import com.rye.common.common.app.BaseActivity;
 
 public class AccountActivity extends BaseActivity {
     private UpdateInfoFragment mCurFragment=new UpdateInfoFragment();

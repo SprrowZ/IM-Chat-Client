@@ -1,4 +1,4 @@
-package com.rye.catcher.common.app;
+package com.rye.common.common.app;
 
 import android.app.Application;
 import android.os.SystemClock;

@@ -1,4 +1,4 @@
-package com.rye.catcher.common.widget;
+package com.rye.common.common.widget;
 
 
 import android.content.Context;
@@ -25,7 +25,7 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.RequestOptions;
 import com.rye.common.R;
-import com.rye.catcher.common.widget.recycler.RecyclerAdapter;
+import com.rye.common.common.widget.recycler.RecyclerAdapter;
 
 import java.io.File;
 import java.util.ArrayList;

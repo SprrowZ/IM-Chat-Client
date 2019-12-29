@@ -1,4 +1,4 @@
-package com.rye.catcher.common.widget;
+package com.rye.common.common.widget;
 
 import android.content.Context;
 

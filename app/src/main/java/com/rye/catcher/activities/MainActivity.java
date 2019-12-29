@@ -1,5 +1,7 @@
-package com.rye.catcher;
+package com.rye.catcher.activities;
 
+import android.content.Context;
+import android.content.Intent;
 import android.graphics.drawable.Drawable;
 
 import android.util.Log;
@@ -17,15 +19,15 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.target.SimpleTarget;
 import com.bumptech.glide.request.transition.Transition;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.rye.catcher.R;
 import com.rye.catcher.activities.AccountActivity;
+import com.rye.catcher.frags.assist.PermissionsFragment;
 import com.rye.catcher.frags.main.ActiveFragment;
 import com.rye.catcher.frags.main.ContactFragment;
 import com.rye.catcher.frags.main.GroupFragment;
 import com.rye.catcher.help.NavHelper;
-import com.rye.catcher.help.permissions.PermissionUtils;
-import com.rye.catcher.common.app.BaseActivity;
-import com.rye.catcher.common.widget.PortraitView;
-import com.yanzhenjie.permission.Permission;
+import com.rye.common.common.app.BaseActivity;
+import com.rye.common.common.widget.PortraitView;
 
 import net.qiujuer.genius.ui.Ui;
 import net.qiujuer.genius.ui.widget.FloatActionButton;
@@ -56,7 +58,15 @@ public class MainActivity extends BaseActivity implements
     @BindView(R.id.btn_action)
     FloatActionButton mAction;
 
-   private  NavHelper mNavHelper;
+    private  NavHelper mNavHelper;
+
+    /**
+     * MainActivity入口
+     * @param context
+     */
+   public static void show(Context context){
+       context.startActivity(new Intent(context,MainActivity.class));
+   }
 
 
     @Override
@@ -68,29 +78,31 @@ public class MainActivity extends BaseActivity implements
     protected void initWidget() {
         super.initWidget();
         //申请权限
-        PermissionUtils.requestPermission(this,"需要存储权限",action->{
-            Log.i("MainActivity  ", "initWidget: Permission Success...");
-            //初始化底部辅助工具类
-            mNavHelper=new NavHelper(this,R.id.lay_container,
-                    getSupportFragmentManager(),this);
-            //将Fragment加进来，同时也传入对应的Title
-            mNavHelper.add(R.id.action_home,new NavHelper.Tab<>(ActiveFragment.class,R.string.title_home))
-                    .add(R.id.action_group,new NavHelper.Tab<>(GroupFragment.class,R.string.title_group))
-                    .add(R.id.action_contact,new NavHelper.Tab<>(ContactFragment.class,R.string.title_contact));
+//        PermissionUtils.requestPermission(this,"需要存储权限",action->{
+//            Log.i("MainActivity  ", "initWidget: Permission Success...");
+//
+//        }, Permission.Group.STORAGE);
+        //初始化底部辅助工具类
+        mNavHelper=new NavHelper(this,R.id.lay_container,
+                getSupportFragmentManager(),this);
+        //将Fragment加进来，同时也传入对应的Title
+        mNavHelper.add(R.id.action_home,new NavHelper.Tab<>(ActiveFragment.class,R.string.title_home))
+                .add(R.id.action_group,new NavHelper.Tab<>(GroupFragment.class,R.string.title_group))
+                .add(R.id.action_contact,new NavHelper.Tab<>(ContactFragment.class,R.string.title_contact));
 
 
-            mNavigation.setOnNavigationItemSelectedListener(this);
-            //顶部背景图片
-            Glide.with(this)
-                    .load(R.drawable.bg_src_morning)
-                    .into(new SimpleTarget<Drawable>() {
-                        @Override
-                        public void onResourceReady(@NonNull Drawable resource, @Nullable Transition<? super Drawable> transition) {
-                            Log.i("zzg", "onResourceReady: ");
-                            mLayAppbar.setBackground(resource.getCurrent());
-                        }
-                    });
-        }, Permission.Group.STORAGE);
+        mNavigation.setOnNavigationItemSelectedListener(this);
+        //顶部背景图片
+        Glide.with(this)
+                .load(R.drawable.bg_src_morning)
+                .into(new SimpleTarget<Drawable>() {
+                    @Override
+                    public void onResourceReady(@NonNull Drawable resource, @Nullable Transition<? super Drawable> transition) {
+                        Log.i("zzg", "onResourceReady: ");
+                        mLayAppbar.setBackground(resource.getCurrent());
+                    }
+                });
+
 
     }
 

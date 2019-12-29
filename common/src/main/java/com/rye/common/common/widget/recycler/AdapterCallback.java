@@ -1,4 +1,4 @@
-package com.rye.catcher.common.widget.recycler;
+package com.rye.common.common.widget.recycler;
 
 /**
  * Created

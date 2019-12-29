@@ -3,15 +3,18 @@ package com.rye.catcher.frags.account;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
+import android.util.Log;
 import android.view.View;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.rye.catcher.R;
 import com.rye.catcher.frags.media.GalleryFragment;
-import com.rye.catcher.common.app.BaseFragment;
-import com.rye.catcher.common.app.zApplication;
-import com.rye.catcher.common.widget.PortraitView;
+import com.rye.common.common.app.BaseFragment;
+import com.rye.common.common.app.zApplication;
+import com.rye.common.common.widget.PortraitView;
+import com.rye.factory.Factory;
+import com.rye.factory.net.UpLoadHelper;
 import com.yalantis.ucrop.UCrop;
 
 import java.io.File;
@@ -56,18 +59,6 @@ public class UpdateInfoFragment extends BaseFragment implements GalleryFragment.
         }
     }
 
-    /**
-     * 加载Uri到当前的View中
-     * @param uri
-     */
-    private void loadPortrait(Uri uri){
-        RequestOptions options=new RequestOptions();
-        options.centerCrop();
-        Glide.with(getActivity())
-                .load(uri)
-                .apply(options)
-                .into(portraitView);
-    }
 
     @Override
     public void onSelectedImage(String path) {
@@ -85,4 +76,31 @@ public class UpdateInfoFragment extends BaseFragment implements GalleryFragment.
                 .withOptions(options)
                 .start(getActivity());
     }
+
+    /**
+     * 加载Uri到当前的View中
+     * @param uri
+     */
+    private void loadPortrait(Uri uri){
+        RequestOptions options=new RequestOptions();
+        options.centerCrop();
+        Glide.with(getActivity())
+                .load(uri)
+                .apply(options)
+                .into(portraitView);
+
+
+        //拿到本地文件的地址
+        String localPath=uri.getPath();
+        Log.e("TAG","LocalFilePath:"+localPath);
+        //上传头像到OSS中去
+        Factory.runOnAsync(new Runnable() {
+            @Override
+            public void run() {
+               String url= UpLoadHelper.uploadPortrait(localPath);
+               Log.e("TAG","url"+url);
+            }
+        });
+    }
+
 }

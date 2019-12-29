@@ -1,4 +1,4 @@
-package com.rye.catcher.common;
+package com.rye.common.common;
 
 /**
  * Created by ZZG on 2018/8/28.

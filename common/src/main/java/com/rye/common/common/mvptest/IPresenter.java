@@ -1,4 +1,4 @@
-package com.rye.catcher.common.mvptest;
+package com.rye.common.common.mvptest;
 
 /**
  * CreateBy ShuQin

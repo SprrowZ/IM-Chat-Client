@@ -1,4 +1,4 @@
-package com.rye.catcher.utils;
+package com.rye.common.utils;
 
 import java.lang.reflect.Array;
 import java.util.ArrayList;

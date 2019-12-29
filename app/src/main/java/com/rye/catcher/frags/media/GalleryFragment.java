@@ -17,8 +17,8 @@ import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 import com.rye.catcher.R;
 
-import com.rye.catcher.common.tools.UiTool;
-import com.rye.catcher.common.widget.GalleryView;
+import com.rye.common.common.tools.UiTool;
+import com.rye.common.common.widget.GalleryView;
 
 
 public class GalleryFragment extends BottomSheetDialogFragment implements GalleryView.SelectedChangeListener {

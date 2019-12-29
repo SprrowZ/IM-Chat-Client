@@ -1,4 +1,4 @@
-package com.rye.catcher.common.app;
+package com.rye.common.common.app;
 
 import android.content.Context;
 import android.os.Bundle;

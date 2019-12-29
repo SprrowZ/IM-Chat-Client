@@ -1,4 +1,4 @@
-package com.rye.catcher.common.tools;
+package com.rye.common.common.tools;
 
 import android.app.Activity;
 import android.content.res.Resources;
