@@ -20,14 +20,12 @@ import com.bumptech.glide.request.target.SimpleTarget;
 import com.bumptech.glide.request.transition.Transition;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.rye.catcher.R;
-import com.rye.catcher.activities.AccountActivity;
-import com.rye.catcher.frags.assist.PermissionsFragment;
 import com.rye.catcher.frags.main.ActiveFragment;
 import com.rye.catcher.frags.main.ContactFragment;
 import com.rye.catcher.frags.main.GroupFragment;
 import com.rye.catcher.help.NavHelper;
-import com.rye.common.common.app.BaseActivity;
-import com.rye.common.common.widget.PortraitView;
+import com.rye.catcher.common.app.BaseActivity;
+import com.rye.catcher.common.widget.PortraitView;
 
 import net.qiujuer.genius.ui.Ui;
 import net.qiujuer.genius.ui.widget.FloatActionButton;

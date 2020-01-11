@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.rye.common.common.widget.SquareLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<com.rye.catcher.common.widget.SquareLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
@@ -35,4 +35,4 @@
         android:visibility="gone"
         app:buttonTint="@color/cb_gallery"
         tools:visibility="gone" />
-</com.rye.common.common.widget.SquareLayout>
+</com.rye.catcher.common.widget.SquareLayout>

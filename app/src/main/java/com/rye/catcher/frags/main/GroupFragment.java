@@ -4,7 +4,7 @@ package com.rye.catcher.frags.main;
 import android.app.Fragment;
 
 import com.rye.catcher.R;
-import com.rye.common.common.app.BaseFragment;
+import com.rye.catcher.common.app.BaseFragment;
 
 /**
  * A simple {@link Fragment} subclass.

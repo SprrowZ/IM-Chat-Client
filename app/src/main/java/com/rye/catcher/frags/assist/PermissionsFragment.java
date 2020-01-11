@@ -14,7 +14,7 @@ import android.view.ViewGroup;
 
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 import com.rye.catcher.R;
-import com.rye.common.common.app.zApplication;
+import com.rye.catcher.common.app.zApplication;
 
 import java.util.List;
 

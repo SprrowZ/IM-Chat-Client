@@ -4,8 +4,8 @@ package com.rye.catcher.frags.main;
 import android.app.Fragment;
 
 import com.rye.catcher.R;
-import com.rye.common.common.app.BaseFragment;
-import com.rye.common.common.widget.GalleryView;
+import com.rye.catcher.common.app.BaseFragment;
+import com.rye.catcher.common.widget.GalleryView;
 
 import butterknife.BindView;
 

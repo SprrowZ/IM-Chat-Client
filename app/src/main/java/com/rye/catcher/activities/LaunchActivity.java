@@ -3,9 +3,8 @@ package com.rye.catcher.activities;
 
 
 import com.rye.catcher.R;
-import com.rye.catcher.activities.MainActivity;
 import com.rye.catcher.frags.assist.PermissionsFragment;
-import com.rye.common.common.app.BaseActivity;
+import com.rye.catcher.common.app.BaseActivity;
 
 public class LaunchActivity extends BaseActivity {
 
