@@ -12,6 +12,6 @@ public interface LoginContract {
         void loginSuccess();
     }
     interface  Presenter extends BaseContract.Presenter {
-       void login(String phone, String name, String password);
+       void login(String phone, String password);
     }
 }

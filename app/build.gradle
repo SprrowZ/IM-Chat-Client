@@ -8,7 +8,15 @@ android {
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode rootProject.ext.versionCode
         versionName rootProject.ext.versionName
-        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+
+
+        //个推相关参数
+        manifestPlaceholders = [
+                GETUI_APP_ID    : "hxPXGY2KE58Paa8tew7AU2",
+                GETUI_APP_KEY   : "hv6H9Rrizf5rIdZ3YgIoS8",
+                GETUI_APP_SECRET: "ypoPVzqvwc90joJlfFCF62",
+                PACKAGE_NAME    : applicationId
+        ]
     }
     buildTypes {
         release {
@@ -47,6 +55,9 @@ dependencies {
     implementation 'com.github.yalantis:ucrop:2.2.2'
 
     implementation "pub.devrel:easypermissions:$rootProject.ext.easyPMVersion"
-    compile project(path: ':common')
+    implementation project(path: ':common')
+
+    // 个推-----版本需要更新
+    implementation "com.getui:sdk:$rootProject.ext.getuiVersion"
 
 }

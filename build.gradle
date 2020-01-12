@@ -5,6 +5,7 @@ buildscript {
     repositories {
         google()
         jcenter()
+
     }
     dependencies {
         classpath 'com.android.tools.build:gradle:3.4.0'
@@ -20,6 +21,9 @@ allprojects {
         google()
         jcenter()
         maven { url "https://jitpack.io" }
+
+        //个推私有Maven URL地址
+        maven { url "http://mvn.gt.igexin.com/nexus/content/repositories/releases/" }
     }
 }
 ext{
@@ -46,6 +50,7 @@ ext{
     getuiVersion = '2.9.3.0'
     dbflowVersion = "4.0.0-beta7"
     airpanelVersion = "1.1.0"
+
 }
 task clean(type: Delete) {
     delete rootProject.buildDir

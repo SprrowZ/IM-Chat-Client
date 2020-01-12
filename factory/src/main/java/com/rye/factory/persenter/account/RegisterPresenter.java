@@ -9,6 +9,7 @@ import com.rye.factory.R;
 import com.rye.factory.data.helper.AccountHelper;
 import com.rye.factory.model.api.account.RegisterModel;
 import com.rye.factory.model.db.User;
+import com.rye.factory.persistence.Account;
 
 import net.qiujuer.genius.kit.handler.Run;
 import net.qiujuer.genius.kit.handler.runable.Action;
@@ -46,7 +47,7 @@ public class RegisterPresenter extends BasePresenter<RegisterContract.View>
             view.showError(R.string.data_account_register_invalid_parameter_password);
         } else {
             //进行网络请求,构建Model，请求调用
-            RegisterModel registerModel = new RegisterModel(phone, password, name);
+            RegisterModel registerModel = new RegisterModel(phone, password, name, Account.getPushId());
             //进行网络请求，并设置回送口
             AccountHelper.register(registerModel, this);
         }

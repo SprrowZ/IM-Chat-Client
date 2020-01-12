@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
 
+import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -26,6 +27,7 @@ import com.rye.catcher.frags.main.GroupFragment;
 import com.rye.catcher.help.NavHelper;
 import com.rye.catcher.common.app.BaseActivity;
 import com.rye.catcher.common.widget.PortraitView;
+import com.rye.factory.persistence.Account;
 
 import net.qiujuer.genius.ui.Ui;
 import net.qiujuer.genius.ui.widget.FloatActionButton;
@@ -66,6 +68,16 @@ public class MainActivity extends BaseActivity implements
        context.startActivity(new Intent(context,MainActivity.class));
    }
 
+    @Override
+    protected boolean initArgs(Bundle bundle) {
+       if (Account.isCompleted()){
+           return super.initArgs(bundle);
+       }else{
+            UserActivity.show(this);
+            return false;
+       }
+
+    }
 
     @Override
     protected int getContentLayoutId() {
@@ -75,11 +87,7 @@ public class MainActivity extends BaseActivity implements
     @Override
     protected void initWidget() {
         super.initWidget();
-        //申请权限
-//        PermissionUtils.requestPermission(this,"需要存储权限",action->{
-//            Log.i("MainActivity  ", "initWidget: Permission Success...");
-//
-//        }, Permission.Group.STORAGE);
+
         //初始化底部辅助工具类
         mNavHelper=new NavHelper(this,R.id.lay_container,
                 getSupportFragmentManager(),this);

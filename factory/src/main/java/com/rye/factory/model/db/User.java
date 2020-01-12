@@ -1,5 +1,10 @@
 package com.rye.factory.model.db;
 
+import com.raizlabs.android.dbflow.annotation.Column;
+import com.raizlabs.android.dbflow.annotation.PrimaryKey;
+import com.raizlabs.android.dbflow.annotation.Table;
+import com.raizlabs.android.dbflow.structure.BaseModel;
+
 import java.util.Date;
 
 /**
@@ -7,22 +12,35 @@ import java.util.Date;
  * at 2020/1/5
  * 根据用户卡片那块就可以确定需要返回什么信息
  */
-public class User {
-
+@Table(database = AppDatabase.class)
+public class User extends BaseModel {
+    public static final int SEX_MAN = 1;
+    public static final int SEX_WOMAN = 2;
+    @PrimaryKey
     private String id;
+    @Column
     private String name;
+    @Column
     private String phone;
+    @Column
     private String portrait;
+    @Column
     private String desc;
+    @Column
+    private int sex = 0;
     //用户关注人的数量
+    @Column
     private int follows;
     //用户粉丝的数量
+    @Column
     private int following;
     //我与当前User的关系状态
+    @Column
     private boolean isFollow;
     //我对某人的备注信息
+    @Column
     private String alias;
-
+    @Column
     private Date modifyAt;
 
     public String getId() {
@@ -103,5 +121,12 @@ public class User {
 
     public void setModifyAt(Date modifyAt) {
         this.modifyAt = modifyAt;
+    }
+    public int getSex() {
+        return sex;
+    }
+
+    public void setSex(int sex) {
+        this.sex = sex;
     }
 }
