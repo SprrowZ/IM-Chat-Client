@@ -4,10 +4,13 @@ import com.rye.factory.model.api.RspModel;
 import com.rye.factory.model.api.account.AccountRspModel;
 import com.rye.factory.model.api.account.LoginModel;
 import com.rye.factory.model.api.account.RegisterModel;
+import com.rye.factory.model.api.user.UserUpdateModel;
+import com.rye.factory.model.card.UserCard;
 
 import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.POST;
+import retrofit2.http.PUT;
 import retrofit2.http.Path;
 
 /**
@@ -39,6 +42,9 @@ public interface RemoteService {
      */
     @POST("account/bind/{pushId}")
     Call<RspModel<AccountRspModel>> accountBind(@Path(encoded = true,value = "pushId") String pushId);
+
+    @PUT("user")
+    Call<RspModel<UserCard>> userUpdate(@Body UserUpdateModel model);
 
 
 
