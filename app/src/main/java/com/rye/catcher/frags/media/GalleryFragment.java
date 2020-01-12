@@ -20,6 +20,8 @@ import com.rye.catcher.R;
 import com.rye.catcher.common.tools.UiTool;
 import com.rye.catcher.common.widget.GalleryView;
 
+import java.util.Objects;
+
 
 public class GalleryFragment extends BottomSheetDialogFragment implements GalleryView.SelectedChangeListener {
 
@@ -31,11 +33,11 @@ public class GalleryFragment extends BottomSheetDialogFragment implements Galler
     }
 
 
+    @NonNull
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
-        //先使用默认的,会导致状态栏也变灰色【Mix2上是没有这个问题的】
-       // return new BottomSheetDialog(getContext());
-        return new TransStatusBottomSheetDialog(getContext());
+        // 返回一个我们复写的
+        return new BottomSheetDialog(Objects.requireNonNull(getContext()));
     }
 
     @Nullable

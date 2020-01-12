@@ -17,17 +17,34 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme.TransStatusBar"
-        android:networkSecurityConfig="@xml/network_security_config"
-        >
-        <!--个推的广播，十分重要-->
-        <receiver android:name=".MessageReceiver"
+        android:usesCleartextTraffic="true">
+
+        <!-- Android7 FileProvider 适配 -->
+        <provider
+            android:name=".AppFileProvider"
+            android:authorities="${applicationId}.provider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/provider_paths" />
+        </provider>
+        <!-- 个推的Service服务,维持长链接接收消息，process 名字不可更改 -->
+        <service
+            android:name=".AppPushService"
             android:enabled="true"
             android:exported="true"
-            android:permission="1000">
-            <intent-filter>
-                <action android:name="com.igexin.sdk.action.${GETUI_APP_ID}"/>
-            </intent-filter>
-        </receiver>
+            android:label="AppPushService"
+            android:permission="1000"
+            android:process=":pushservice" />
+        <!-- 个推的消息送达服务，用以接收AppPushService处理后的有效消息接收，类似于之前的广播 -->
+        <service
+            android:name=".AppMessageReceiverService"
+            android:enabled="true"
+            android:exported="true"
+            android:label="AppMessageReceiverService"
+            android:permission="1000" />
+
         <activity android:name=".activities.UserActivity"></activity>
         <activity
             android:name=".LaunchActivity"

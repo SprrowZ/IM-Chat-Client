@@ -164,7 +164,7 @@ public class Factory {
      *
      * @param message
      */
-    public static void disPatchPush(String message) {
+    public static void dispatchPush(String message) {
         // TODO: 2020/1/11
     }
 }

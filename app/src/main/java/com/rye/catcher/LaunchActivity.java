@@ -24,7 +24,8 @@ import net.qiujuer.genius.ui.compat.UiCompat;
 public class LaunchActivity extends BaseActivity {
 
     private ColorDrawable mBgDrawable;
-
+    // 是否已经得到PushId
+    private boolean mAlreadyGotPushReceiverId = false;
     @Override
     protected int getContentLayoutId() {
         return R.layout.activity_launch;
@@ -46,58 +47,55 @@ public class LaunchActivity extends BaseActivity {
     protected void initData() {
         super.initData();
         //开启动画,执行到百分之五十等待pushId
-        startAnim(0.5f, new Runnable() {
-            @Override
-            public void run() {
-                waitPushReceivedId();
-            }
-        });
+        // 动画进入到50%等待PushId获取到
+        // 检查等待状态
+        startAnim(0.5f, this::waitPushReceiverId);
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        // 判断是否已经得到推送Id，如果已经得到则进行跳转操作，
+        // 在操作中检测权限状态
+        if (mAlreadyGotPushReceiverId) {
+            reallySkip();
+        }
+    }
+    /**
+     * 在跳转之前需要把剩下的50%进行完成
+     */
+    private void waitPushReceiverIdDone() {
+        // 标志已经得到PushId
+        mAlreadyGotPushReceiverId = true;
+        startAnim(1f, this::reallySkip);
+    }
     /**
      * 等待个推sdk对我们的pushId进行设置
      */
-    private void waitPushReceivedId() {
+    private void waitPushReceiverId() {
         //判断是否登录
         if (Account.isLogined()) {
             //判断是否绑定设备，如果没有，就得我们MessageReceiver进行绑定
             if (Account.isBind()) {
-                skip();
+                waitPushReceiverIdDone();
                 return;
             }
         } else {
             //没有登录但已经绑定过设备ID了
             if (!TextUtils.isEmpty(Account.getPushId())) {
                 //跳转
-                skip();
+                waitPushReceiverIdDone();
                 return;
             }
         }
-
-
-        if (!TextUtils.isEmpty(Account.getPushId())) {
-            skip();
-            return;
-        }
         // TODO: 2020/1/11 感觉得设置一个最大尝试次数，这样无限循环放到真实项目中，必定要被打死
         //间隔500ms，循环等待
-        getWindow().getDecorView().postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                waitPushReceivedId();
-            }
-        }, 500);
+        // 循环等待
+        getWindow().getDecorView()
+                .postDelayed(this::waitPushReceiverId, 500);
     }
 
-
-    private void skip() {
-        startAnim(1.0f, new Runnable() {
-            @Override
-            public void run() {
-                reallySkip();
-            }
-        });
-    }
 
     /**
      * 真正的跳转操作

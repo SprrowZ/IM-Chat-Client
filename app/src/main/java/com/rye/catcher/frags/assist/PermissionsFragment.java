@@ -2,21 +2,27 @@ package com.rye.catcher.frags.assist;
 
 
 import android.Manifest;
+import android.app.Dialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentActivity;
 import androidx.fragment.app.FragmentManager;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 import com.rye.catcher.R;
 import com.rye.catcher.common.app.zApplication;
 
 import java.util.List;
+import java.util.Objects;
 
 import pub.devrel.easypermissions.AfterPermissionGranted;
 import pub.devrel.easypermissions.AppSettingsDialog;
@@ -28,11 +34,14 @@ import pub.devrel.easypermissions.EasyPermissions;
 public class PermissionsFragment extends BottomSheetDialogFragment implements EasyPermissions.PermissionCallbacks {
     //权限申请标识
     private static final  int RC=0X0100;
-    public PermissionsFragment() {
-        // Required empty public constructor
+
+
+    @NonNull
+    @Override
+    public Dialog onCreateDialog(Bundle savedInstanceState) {
+        // 复用即可
+        return new BottomSheetDialog(Objects.requireNonNull(getContext()));
     }
-
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -46,6 +55,15 @@ public class PermissionsFragment extends BottomSheetDialogFragment implements Ea
             }
         });
         return root;
+    }
+
+    @Override
+    public void onDismiss(DialogInterface dialog) {
+        super.onDismiss(dialog);
+        FragmentActivity activity = getActivity();
+        if (activity != null) {
+            haveAll(activity, activity.getSupportFragmentManager());
+        }
     }
 
     /**
@@ -102,8 +120,19 @@ public class PermissionsFragment extends BottomSheetDialogFragment implements Ea
     }
 
 
-    private static void show(FragmentManager manager){
-        new PermissionsFragment().show(manager,PermissionsFragment.class.getName());
+    // 私有的show方法
+    private static void show(FragmentManager manager) {
+        // 去重避免多次界面重复可见导致弹出框累积
+        String tag = PermissionsFragment.class.getName();
+        Fragment oldFragment = manager.findFragmentByTag(tag);
+        if (oldFragment != null) {
+            manager.beginTransaction()
+                    .remove(oldFragment)
+                    .commitNowAllowingStateLoss();
+        }
+        // 调用BottomSheetDialogFragment以及准备好的显示方法
+        new PermissionsFragment()
+                .show(manager, tag);
     }
 
     /**

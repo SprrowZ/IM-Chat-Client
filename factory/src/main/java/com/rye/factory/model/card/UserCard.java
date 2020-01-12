@@ -113,7 +113,6 @@ public class UserCard {
 
     public User build() {
         if (user == null) {
-
             User user = new User();
             user.setId(id);
             user.setName(name);
