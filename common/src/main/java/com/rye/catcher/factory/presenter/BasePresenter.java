@@ -4,7 +4,7 @@ package com.rye.catcher.factory.presenter;
  * CreateBy ShuQin
  * at 2020/1/5
  */
-public class BasePresenter<T extends BaseContract.View>  implements BaseContract.Presenter {
+public abstract class BasePresenter<T extends BaseContract.View>  implements BaseContract.Presenter {
 
     private T mView;
 
