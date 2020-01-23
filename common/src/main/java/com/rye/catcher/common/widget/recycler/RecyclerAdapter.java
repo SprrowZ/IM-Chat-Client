@@ -57,20 +57,22 @@ public abstract class RecyclerAdapter<Data>
     @NonNull
     @Override
     public ViewHolder<Data> onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        //得到LayoutInflater用于把xml文件初始化为View
+
         LayoutInflater inflater = LayoutInflater.from(parent.getContext());
-        //把xml id为viewType的文件初始化为一个rootView
+
         View root = inflater.inflate(viewType, parent, false);
         //通过子类必须实现的方法，得到一个viewHolder,viewType强制指定为xml的id
         ViewHolder<Data> holder = onCreateViewHolder(root, viewType);
-        //设置点击事件
+
         root.setOnClickListener(this);
         root.setOnLongClickListener(this);
         //将view绑定viewHolder，就可以通过tag取到viewHolder
         //设置View的Tag为ViewHolder，进行双向绑定
         root.setTag(R.id.tag_recycler_holder,holder);
+
+        //--------------------只是将view绑定到holder中，不必非得在构造函数中
         holder.unbinder = ButterKnife.bind(holder, root);//将holder绑定到根布局
-        //绑定callback
+
         holder.callback = this;
         return holder;
     }
@@ -180,6 +182,13 @@ public abstract class RecyclerAdapter<Data>
         notifyDataSetChanged();
     }
 
+    /**
+     * 返回数据集合
+     * @return
+     */
+    public List<Data> getItems(){
+        return mDataList;
+    }
     /**
      * 替换为一个新的集合，其中包括了清空
      *
