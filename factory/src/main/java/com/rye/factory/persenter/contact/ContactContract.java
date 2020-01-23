@@ -1,10 +1,9 @@
 package com.rye.factory.persenter.contact;
 
-import com.rye.catcher.common.widget.recycler.RecyclerAdapter;
+
 import com.rye.catcher.factory.presenter.BaseContract;
 import com.rye.factory.model.db.User;
 
-import java.util.List;
 
 /**
  * CreateBy ShuQin

@@ -1,5 +1,6 @@
 package com.rye.factory.model.card;
 
+import com.rye.catcher.factory.model.Author;
 import com.rye.factory.model.db.User;
 
 import java.util.Date;
@@ -8,7 +9,7 @@ import java.util.Date;
  * CreateBy ShuQin
  * at 2020/1/12
  */
-public class UserCard {
+public class UserCard implements Author {
     private String id;
     private String name;
     private String phone;

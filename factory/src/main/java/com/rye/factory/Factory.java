@@ -92,7 +92,7 @@ public class Factory {
      * @param model
      * @param callback
      */
-    public static void decodeResource(RspModel model, DataSource.FailedCallback callback) {
+    public static void decodeRspCode(RspModel model, DataSource.FailedCallback callback) {
         if (model == null)
             return;
         switch (model.getCode()) {
