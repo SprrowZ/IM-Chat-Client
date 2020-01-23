@@ -98,7 +98,7 @@ public class AccountHelper {
                }
            } else {
                //对返回失败的提示
-               Factory.decodeResource(rspModel,callback);
+               Factory.decodeRspCode(rspModel,callback);
            }
        }
 

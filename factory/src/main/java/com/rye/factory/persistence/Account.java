@@ -81,7 +81,7 @@ public class Account {
     }
 
     /**
-     * 返回当前账户的状态
+     * 返回当前账户的状态----可以设置一个默认登陆，省的每次都查...
      *
      * @return
      */
@@ -147,6 +147,14 @@ public class Account {
                 .from(User.class)
                 .where(User_Table.id.eq(userId))
                 .querySingle();
+    }
+
+    /**
+     * 返回用户Id
+     * @return
+     */
+    public static String getUserId(){
+      return   getUser().getId();
     }
 
     /**
