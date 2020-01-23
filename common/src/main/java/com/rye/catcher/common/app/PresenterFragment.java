@@ -28,12 +28,19 @@ public abstract class PresenterFragment<T extends  BaseContract.Presenter>
 
     @Override
     public void showError(int str) {
-        zApplication.showToast(str);
+        if (mPlaceHolderView!=null){//占位布局不为空的情况下，优先使用占位布局
+            mPlaceHolderView.triggerError(str);
+        }else {
+            zApplication.showToast(str);
+        }
+
     }
 
     @Override
     public void showLoading() {
-        // TODO: 2020/1/5 --显示Loading
+        if (mPlaceHolderView!=null){
+            mPlaceHolderView.triggerLoading();
+        }
     }
 
     @Override

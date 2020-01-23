@@ -11,6 +11,8 @@ import androidx.annotation.LayoutRes;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import com.rye.catcher.common.widget.convention.PlaceHolderView;
+
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
 
@@ -20,7 +22,9 @@ import butterknife.Unbinder;
 public abstract class BaseFragment extends Fragment {
     protected View mRoot;
     protected Unbinder mRootUnbinder;
-
+    protected PlaceHolderView mPlaceHolderView;
+    //标识是否第一次初始化数据
+    protected  boolean mIsFirstInitData=true;
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
@@ -52,7 +56,10 @@ public abstract class BaseFragment extends Fragment {
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        // 当View创建完成后初始化数据
+        if (mIsFirstInitData){
+            mIsFirstInitData=false;
+            onFirstInit();
+        }
         initData();
     }
 
@@ -85,6 +92,8 @@ public abstract class BaseFragment extends Fragment {
 
     }
 
+
+
     /**
      * 当首次初始化数据的时候会调用的方法
      */
@@ -102,6 +111,13 @@ public abstract class BaseFragment extends Fragment {
         return false;
     }
 
+
+    /*
+    设置占位布局
+     */
+    public void  setPlaceHolderView(PlaceHolderView placeHolderView){
+        this.mPlaceHolderView=placeHolderView;
+    }
 
 
 }
