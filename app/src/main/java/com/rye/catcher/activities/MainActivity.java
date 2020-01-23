@@ -118,15 +118,31 @@ public class MainActivity extends BaseActivity implements
         //初次进入的时候加载第一个Fragment，从底部接管我们的Menu
         Menu menu=mNavigation.getMenu();
         menu.performIdentifierAction(R.id.action_home,0);//然后触发底下的方法，接着就是一连串把title也替换了
+
+        //
+        mPortrait.setUp(Glide.with(this),Account.getUser());
+
     }
+     @OnClick(R.id.im_portrait)
+     void onPortraitClick(){
+        PersonalActivity.show(this,Account.getUserId());
+     }
 
     @OnClick(R.id.im_search)
     void onSearchMenuClick(){
-
+       int type=Objects.equals(mNavHelper.getCurrentTab().extra,R.string.title_group)?
+               SearchActivity.TYPE_GROUP:SearchActivity.TYPE_USER;
+       SearchActivity.show(this,type);
     }
     @OnClick(R.id.btn_action)
     void onActionClick(){
-        AccountActivity.show(this);
+       //浮动按钮点击时，判断是添加人还是群
+        if (Objects.equals(mNavHelper.getCurrentTab().extra,R.string.title_group)){
+            //打开创建群的界面
+            // TODO: 2020/1/18
+        }else{
+            SearchActivity.show(this,SearchActivity.TYPE_USER);
+        }
     }
 
 
