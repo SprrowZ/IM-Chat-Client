@@ -4,8 +4,11 @@ import com.raizlabs.android.dbflow.annotation.Column;
 import com.raizlabs.android.dbflow.annotation.PrimaryKey;
 import com.raizlabs.android.dbflow.annotation.Table;
 import com.raizlabs.android.dbflow.structure.BaseModel;
+import com.rye.catcher.factory.model.Author;
+import com.rye.factory.utils.DiffUiDataCallback;
 
 import java.util.Date;
+import java.util.Objects;
 
 /**
  * CreateBy ShuQin
@@ -13,7 +16,7 @@ import java.util.Date;
  * 根据用户卡片那块就可以确定需要返回什么信息
  */
 @Table(database = AppDatabase.class)
-public class User extends BaseModel {
+public class User extends BaseModel implements Author, DiffUiDataCallback.UiDataDiffer<User> {
     public static final int SEX_MAN = 1;
     public static final int SEX_WOMAN = 2;
     @PrimaryKey
@@ -128,5 +131,26 @@ public class User extends BaseModel {
 
     public void setSex(int sex) {
         this.sex = sex;
+    }
+
+
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getId(), getName(), getPhone(), getPortrait(), getDesc(), getSex(), getFollows(), getFollowing(), isFollow(), getAlias(), getModifyAt());
+    }
+
+    @Override
+    public boolean isSame(User old) {//相当于重写equals
+        return this==old || getId().equals(old.getId());
+    }
+
+    @Override
+    public boolean isUiContentSame(User old) {
+        return this==old ||(  Objects.equals(name,old.name)
+        &&Objects.equals(portrait,old.portrait))
+        &&Objects.equals(sex,old.sex)
+        &&Objects.equals(isFollow,old.isFollow)
+              ;
     }
 }
