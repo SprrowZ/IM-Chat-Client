@@ -1,13 +1,16 @@
 package com.rye.factory.model.card;
 
+
+
 import com.rye.catcher.factory.model.Author;
 import com.rye.factory.model.db.User;
 
 import java.util.Date;
 
 /**
- * CreateBy ShuQin
- * at 2020/1/12
+ * 用户卡片，用于接收服务器返回
+ * @author qiujuer Email:qiujuer@live.cn
+ * @version 1.0.0
  */
 public class UserCard implements Author {
     private String id;
@@ -109,7 +112,7 @@ public class UserCard implements Author {
         this.modifyAt = modifyAt;
     }
 
-    //缓存一个User，不能被Gson解析框架解析使用
+    // 缓存一个对应的User, 不能被GSON框架解析使用ø
     private transient User user;
 
     public User build() {
@@ -128,6 +131,5 @@ public class UserCard implements Author {
             this.user = user;
         }
         return user;
-
     }
 }
