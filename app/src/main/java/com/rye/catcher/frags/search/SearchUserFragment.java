@@ -149,6 +149,7 @@ public class SearchUserFragment extends PresenterFragment <SearchContract.Presen
         public void onFollowSucceed(UserCard userCard) {
          if (mFollow.getDrawable() instanceof LoadingDrawable){
              ((LoadingDrawable)mFollow.getDrawable()).stop();
+             mFollow.setEnabled(false);
              mFollow.setImageResource(R.drawable.sel_opt_done_add);
          }
         }

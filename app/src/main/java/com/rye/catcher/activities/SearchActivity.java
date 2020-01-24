@@ -84,6 +84,7 @@ public class SearchActivity extends ToolbarActivity {
                 //当文字改变的时候，不及时搜索，只有为null的情况下搜索
                 @Override
                 public boolean onQueryTextChange(String newText) {
+                    // TODO: 2020/1/24 加个本地查询
                     if (TextUtils.isEmpty(newText)){
                         search("");
                         return  true;
