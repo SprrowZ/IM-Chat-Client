@@ -1,7 +1,10 @@
 package com.rye.factory.data.helper;
 
 
+import android.os.Build;
 import android.text.TextUtils;
+
+import androidx.annotation.RequiresApi;
 
 import com.rye.catcher.factory.data.DataSource;
 import com.rye.factory.Factory;
@@ -75,6 +78,7 @@ public class AccountHelper {
        public  AccountRspCallback(DataSource.Callback<User> callback){
            this.callback=callback;
        }
+       @RequiresApi(api = Build.VERSION_CODES.N)
        @Override
        public void onResponse(Call<RspModel<AccountRspModel>> call, Response<RspModel<AccountRspModel>> response) {
            //请求成功
@@ -82,7 +86,7 @@ public class AccountHelper {
            if (rspModel.success()) {
                AccountRspModel accountRspModel = rspModel.getResult();
                User user = accountRspModel.getUser();
-               user.save();
+               DbHelper.save(User.class,user);
                // TODO: 2020/1/11 待了解所有的DBFlow存储方法
                //同步到sp中
                Account.login(accountRspModel);

@@ -167,8 +167,8 @@ public class Session extends BaseModel implements DiffUiDataCallback.UiDataDiffe
 
 
     /**
-     * 对于一条消息，我们提取主要部分，用于和Session进行对应
-     *
+     * 对于一条消息，我们提取主要部分，
+     * 用于和Session进行对应
      * @param message 消息Model
      * @return 返回一个Session.Identify
      */
@@ -183,6 +183,10 @@ public class Session extends BaseModel implements DiffUiDataCallback.UiDataDiffe
             identify.id = message.getGroup().getId();
         }
         return identify;
+    }
+
+    public void refreshToNow() {
+        // TODO: 2020/1/25  
     }
 
 
@@ -206,7 +210,7 @@ public class Session extends BaseModel implements DiffUiDataCallback.UiDataDiffe
 
             Identify identify = (Identify) o;
             return type == identify.type
-                    && (id != null ? id.equals(identify.id) : identify.id == null);
+                    && (Objects.equals(id, identify.id));
         }
 
         @Override

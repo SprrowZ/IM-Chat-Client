@@ -35,7 +35,7 @@ public class Group extends BaseModel implements Serializable, DiffUiDataCallback
     private Date joinAt;// 我的加入时间
     @Column
     private Date modifyAt;// 信息修改时间
-
+    // TODO: 2020/1/24 待了解这个外键 
     @ForeignKey(tableClass = User.class, stubbedRelationship = true)
     private User owner;// 创建者外键
 

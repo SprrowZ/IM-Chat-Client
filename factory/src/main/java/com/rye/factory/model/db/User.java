@@ -15,6 +15,7 @@ import java.util.Objects;
  * at 2020/1/5
  * 根据用户卡片那块就可以确定需要返回什么信息
  */
+// TODO: 2020/1/25 重写HashCode和equals----必须了解~！
 @Table(database = AppDatabase.class)
 public class User extends BaseModel implements Author, DiffUiDataCallback.UiDataDiffer<User> {
     public static final int SEX_MAN = 1;

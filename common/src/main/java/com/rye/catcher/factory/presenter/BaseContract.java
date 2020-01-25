@@ -28,7 +28,7 @@ public interface BaseContract {
     interface  RecyclerView<T extends Presenter,ViewMode > extends View<T>{
         //界面端只能全局刷，不能定位到个体
         //  void onDone(List<User> users);
-        //拿到一个适配器，然后自主进行刷新
+        //拿到一个适配器，然后自主进行刷新---View将数据传递给Presenter
         RecyclerAdapter<ViewMode> getRecyclerAdapter();
         //当数据该改变的时候调用，这样就可以进行局部刷新
         void onAdapterDataChanged();

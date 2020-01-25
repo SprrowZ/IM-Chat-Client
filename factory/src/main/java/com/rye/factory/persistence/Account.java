@@ -3,6 +3,7 @@ package com.rye.factory.persistence;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.text.TextUtils;
+import android.util.Log;
 
 import com.raizlabs.android.dbflow.sql.language.SQLite;
 import com.rye.factory.Factory;
@@ -99,6 +100,7 @@ public class Account {
     public static boolean isCompleted(){
         if (isLogined()){
             User self=getUser();
+            Log.i("Account","use USER-INF0");
             return !TextUtils.isEmpty(self.getDesc())
                     &&!TextUtils.isEmpty(self.getPortrait())
                     &&self.getSex()!=0;

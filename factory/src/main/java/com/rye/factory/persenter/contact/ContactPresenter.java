@@ -10,78 +10,36 @@ import com.raizlabs.android.dbflow.config.DatabaseDefinition;
 import com.raizlabs.android.dbflow.config.FlowManager;
 import com.raizlabs.android.dbflow.sql.language.SQLite;
 
+import com.rye.catcher.common.widget.recycler.RecyclerAdapter;
 import com.rye.catcher.factory.data.DataSource;
 import com.rye.catcher.factory.presenter.BasePresenter;
+import com.rye.catcher.factory.presenter.BaseRecyclerPresenter;
 import com.rye.factory.data.helper.UserHelper;
-import com.rye.factory.model.card.UserCard;
-import com.rye.factory.model.db.AppDatabase;
+import com.rye.factory.data.user.ContactDataSource;
+import com.rye.factory.data.user.ContactRepository;
 import com.rye.factory.model.db.User;
-import com.rye.factory.model.db.User_Table;
-import com.rye.factory.persistence.Account;
 import com.rye.factory.utils.DiffUiDataCallback;
-
-import java.util.ArrayList;
 import java.util.List;
 
 /**
  * CreateBy ShuQin
  * at 2020/1/22
  */
-public class ContactPresenter extends BasePresenter<ContactContract.View>
-        implements ContactContract.Presenter {
+public class ContactPresenter extends BaseRecyclerPresenter<User,ContactContract.View>
+        implements ContactContract.Presenter ,DataSource.SuccessedCallback<List<User>>{
+    private   ContactDataSource mSources;
     public ContactPresenter(ContactContract.View view) {
         super(view);
+        mSources=new ContactRepository();
     }
 
     @Override
     public void start() {
         super.start();
-        // TODO: 2020/1/22 加载数据
-
         //本地查询数据库
-        SQLite.select()
-                .from(User.class)
-                .where(User_Table.isFollow.eq(true))
-                .and(User_Table.id.notEq(Account.getUserId()))
-                .orderBy(User_Table.name, true)
-                .limit(100)
-                .async()
-                .queryListResultCallback((transaction, tResult) -> {
-                    getView().getRecyclerAdapter().replace(tResult);
-                    getView().onAdapterDataChanged();
-                })
-                .execute();
-        //查询远端数据
-        UserHelper.refreshContacts(new DataSource.Callback<List<UserCard>>() {
-            @Override
-            public void onDataNotAvailable(int res) {
-                //网络失败，因为本地有数据，不处理错误
-            }
-
-            @RequiresApi(api = Build.VERSION_CODES.N)
-            @Override
-            public void onDataLoaded(final List<UserCard> userCards) {
-                final List<User> users = new ArrayList<>();
-                userCards.stream().forEach(userCard ->
-                        users.add(userCard.build()));
-                //存到本地,有三种方式，这里是开启事务
-                DatabaseDefinition definition = FlowManager.getDatabase(AppDatabase.class);
-
-                definition.beginTransactionAsync(databaseWrapper ->
-                        FlowManager.getModelAdapter(User.class)
-                                .saveAll(users)).build().execute();
-                //网络的数据往往是新的，需要刷新一下
-                //比较不同，局部刷新
-                List<User> old=getView().getRecyclerAdapter().getItems();
-
-                diff(users,old);
-            }
-        });
-        // TODO: 2020/1/22
-        //1.关注后虽然存储数据库，但是没有刷新联系人
-        //2.如果刷新数据库，或者网络，就会全局刷新
-        //3.本地刷新和网络刷新，再添加到界面的时候有可能会有冲突。导致数据刷新异常
-        //4.如果识别数据库中已经有这条数据了
+         mSources.load(this);
+        //查询网络数据
+        UserHelper.refreshContacts();
     }
 
     /**
@@ -100,4 +58,29 @@ public class ContactPresenter extends BasePresenter<ContactContract.View>
         getView().onAdapterDataChanged();
     }
 
+    /**
+     * 必须保证在子线程中，对比是一个耗时的操作
+     * @param users
+     */
+    @Override
+    public void onDataLoaded(List<User> users) {
+        //无论怎么操作，数据变更最终都会通知到这里
+        final  ContactContract.View view=getView();
+        if (view==null) return;
+        RecyclerAdapter<User> adapter=view.getRecyclerAdapter();
+        //拿到老数据
+        List<User> old=adapter.getItems();
+        //新老数据对比
+        DiffUtil.Callback callback=new DiffUiDataCallback<>(old,users);
+        DiffUtil.DiffResult result=DiffUtil.calculateDiff(callback);
+        //调用基类方法进行界面刷新
+        refreshData(result,users);
+    }
+
+    @Override
+    public void destroy() {
+        super.destroy();
+        //当界面销毁时，把监听也进行销毁----------防止内存泄漏
+        mSources.dispose();
+    }
 }
