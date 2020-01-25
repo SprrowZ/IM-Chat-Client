@@ -19,7 +19,7 @@ import java.util.Objects;
  * @version 1.0.0
  */
 @Table(database = AppDatabase.class)
-public class Session extends BaseModel implements DiffUiDataCallback.UiDataDiffer<Session> {
+public class Session extends BaseDbModel<Session> {
     @PrimaryKey
     private String id; // Id, 是Message中的接收者User的Id或者群的Id
     @Column
@@ -169,6 +169,7 @@ public class Session extends BaseModel implements DiffUiDataCallback.UiDataDiffe
     /**
      * 对于一条消息，我们提取主要部分，
      * 用于和Session进行对应
+     *
      * @param message 消息Model
      * @return 返回一个Session.Identify
      */

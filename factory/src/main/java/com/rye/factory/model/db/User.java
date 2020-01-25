@@ -17,7 +17,7 @@ import java.util.Objects;
  */
 // TODO: 2020/1/25 重写HashCode和equals----必须了解~！
 @Table(database = AppDatabase.class)
-public class User extends BaseModel implements Author, DiffUiDataCallback.UiDataDiffer<User> {
+public class User extends BaseDbModel<User> implements Author {
     public static final int SEX_MAN = 1;
     public static final int SEX_WOMAN = 2;
     @PrimaryKey
@@ -126,6 +126,7 @@ public class User extends BaseModel implements Author, DiffUiDataCallback.UiData
     public void setModifyAt(Date modifyAt) {
         this.modifyAt = modifyAt;
     }
+
     public int getSex() {
         return sex;
     }
@@ -135,23 +136,40 @@ public class User extends BaseModel implements Author, DiffUiDataCallback.UiData
     }
 
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof User)) return false;
+        User user = (User) o;
+        return getSex() == user.getSex() &&
+                getFollows() == user.getFollows() &&
+                getFollowing() == user.getFollowing() &&
+                isFollow() == user.isFollow() &&
+                getId().equals(user.getId()) &&
+                Objects.equals(getName(), user.getName()) &&
+                Objects.equals(getPhone(), user.getPhone()) &&
+                Objects.equals(getPortrait(), user.getPortrait()) &&
+                Objects.equals(getDesc(), user.getDesc()) &&
+                Objects.equals(getAlias(), user.getAlias()) &&
+                Objects.equals(getModifyAt(), user.getModifyAt());
+    }
 
     @Override
     public int hashCode() {
-        return Objects.hash(getId(), getName(), getPhone(), getPortrait(), getDesc(), getSex(), getFollows(), getFollowing(), isFollow(), getAlias(), getModifyAt());
+        return id != null ? id.hashCode() : 0;
     }
 
     @Override
     public boolean isSame(User old) {//相当于重写equals
-        return this==old || getId().equals(old.getId());
+        return this == old || getId().equals(old.getId());
     }
 
     @Override
     public boolean isUiContentSame(User old) {
-        return this==old ||(  Objects.equals(name,old.name)
-        &&Objects.equals(portrait,old.portrait))
-        &&Objects.equals(sex,old.sex)
-        &&Objects.equals(isFollow,old.isFollow)
-              ;
+        return this == old || (Objects.equals(name, old.name)
+                && Objects.equals(portrait, old.portrait))
+                && Objects.equals(sex, old.sex)
+                && Objects.equals(isFollow, old.isFollow)
+                ;
     }
 }
