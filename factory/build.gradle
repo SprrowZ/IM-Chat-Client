@@ -37,7 +37,7 @@ dependencies {
     api "com.google.code.gson:gson:$rootProject.ext.gsonVersion"
 
     api project(':common')
-
+    api "net.qiujuer.genius:kit-reflect:$rootProject.ext.geniusVersion"
     annotationProcessor "com.github.Raizlabs.DBFlow:dbflow-processor:${rootProject.ext.dbflowVersion}"
     api "com.github.Raizlabs.DBFlow:dbflow-core:${rootProject.ext.dbflowVersion}"
     api "com.github.Raizlabs.DBFlow:dbflow:${rootProject.ext.dbflowVersion}"

@@ -1,7 +1,5 @@
 package com.rye.catcher.factory.presenter;
 
-import android.content.IntentFilter;
-
 import androidx.recyclerview.widget.DiffUtil;
 
 import com.rye.catcher.common.widget.recycler.RecyclerAdapter;
@@ -16,7 +14,7 @@ import java.util.List;
  * CreateBy ShuQin
  * at 2020/1/25
  */
-public class BaseRecyclerPresenter<ViewMode, View extends BaseContract.RecyclerView>
+public class BaseRecyclerPresenter<ViewModel, View extends BaseContract.RecyclerView>
         extends BasePresenter<View> {
     public BaseRecyclerPresenter(View view) {
         super(view);
@@ -26,13 +24,13 @@ public class BaseRecyclerPresenter<ViewMode, View extends BaseContract.RecyclerV
      * 全量更新
      * @param dataList
      */
-    protected void refreshData(final List<ViewMode> dataList) {
+    protected void refreshData(final List<ViewModel> dataList) {
         Run.onUiSync(new Action() {
             @Override
             public void call() {
                 View view = getView();
                 if (view == null) return;
-                RecyclerAdapter<ViewMode> adapter = view.getRecyclerAdapter();
+                RecyclerAdapter<ViewModel> adapter = view.getRecyclerAdapter();
                 //整体替换数据，这是个全局刷新，replace中有notifyDataChanged
                 adapter.replace(dataList);
                 //通知上层数据更新，我觉得封装到RecycleAdapter中更好点
@@ -45,7 +43,7 @@ public class BaseRecyclerPresenter<ViewMode, View extends BaseContract.RecyclerV
      * @param diffResult
      * @param dataList
      */
-    protected void refreshData(final DiffUtil.DiffResult diffResult, final List<ViewMode> dataList) {
+    protected void refreshData(final DiffUtil.DiffResult diffResult, final List<ViewModel> dataList) {
         Run.onUiAsync(new Action() {
             @Override
             public void call() {
@@ -59,10 +57,10 @@ public class BaseRecyclerPresenter<ViewMode, View extends BaseContract.RecyclerV
      * @param diffResult
      * @param dataList
      */
-    private void refreshDataOnUiThread(final DiffUtil.DiffResult diffResult, final List<ViewMode> dataList) {
+    private void refreshDataOnUiThread(final DiffUtil.DiffResult diffResult, final List<ViewModel> dataList) {
         View view = getView();
         if (view == null) return;
-        RecyclerAdapter<ViewMode> adapter = view.getRecyclerAdapter();
+        RecyclerAdapter<ViewModel> adapter = view.getRecyclerAdapter();
         //这里是清空后通过diffResult.dispatchUpdatesTo去差量更新，replace里有个notify是全量
         adapter.getItems().clear();
         adapter.getItems().addAll(dataList);

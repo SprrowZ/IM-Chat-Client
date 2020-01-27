@@ -1,7 +1,10 @@
 package com.rye.catcher;
 
 import android.content.Context;
+import android.os.Build;
 import android.util.Log;
+
+import androidx.annotation.RequiresApi;
 
 import com.igexin.sdk.GTIntentService;
 import com.igexin.sdk.message.GTCmdMessage;
@@ -32,6 +35,7 @@ public class AppMessageReceiverService extends GTIntentService {
         onClientInit(s);
     }
 
+
     @Override
     public void onReceiveMessageData(Context context, GTTransmitMessage gtTransmitMessage) {
         // 当接收到透传消息时回调，跟之前广播接收消息一样
@@ -41,7 +45,9 @@ public class AppMessageReceiverService extends GTIntentService {
         byte[] payload = gtTransmitMessage.getPayload();
         if (payload != null) {
             String message = new String(payload);
-            onMessageArrived(message);
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                onMessageArrived(message);
+            }
         }
     }
 
@@ -90,6 +96,7 @@ public class AppMessageReceiverService extends GTIntentService {
      *
      * @param message 新消息
      */
+    @RequiresApi(api = Build.VERSION_CODES.N)
     private void onMessageArrived(String message) {
         // 交给Factory处理
         Factory.dispatchPush(message);

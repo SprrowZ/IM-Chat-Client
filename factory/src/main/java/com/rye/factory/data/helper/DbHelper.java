@@ -137,7 +137,7 @@ public class DbHelper {
      * @param models
      * @param <Model>
      */
-    // TODO: 2020/1/25 添加好友，流程会走两遍，待研究 
+    // TODO: 2020/1/25 添加好友，流程会走两遍，待研究
     @RequiresApi(api = Build.VERSION_CODES.N)
     private final  <Model extends BaseModel> void notifySave(final Class<Model> mClass, final Model... models) {
         // TODO: 2020/1/24
@@ -245,7 +245,7 @@ public class DbHelper {
 
 
 
-  public   interface ChangeListener<Data>{
+  public   interface ChangeListener<Data extends BaseModel>{
         void onDataSaved(Data... data);
         void onDataDeleted(Data... data);
    }

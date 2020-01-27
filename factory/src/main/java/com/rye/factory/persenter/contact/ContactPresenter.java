@@ -1,23 +1,14 @@
 package com.rye.factory.persenter.contact;
 
-import android.os.Build;
 
-
-import androidx.annotation.RequiresApi;
 import androidx.recyclerview.widget.DiffUtil;
-
-import com.raizlabs.android.dbflow.config.DatabaseDefinition;
-import com.raizlabs.android.dbflow.config.FlowManager;
-import com.raizlabs.android.dbflow.sql.language.SQLite;
-
 import com.rye.catcher.common.widget.recycler.RecyclerAdapter;
 import com.rye.catcher.factory.data.DataSource;
-import com.rye.catcher.factory.presenter.BasePresenter;
-import com.rye.catcher.factory.presenter.BaseRecyclerPresenter;
 import com.rye.factory.data.helper.UserHelper;
 import com.rye.factory.data.user.ContactDataSource;
 import com.rye.factory.data.user.ContactRepository;
 import com.rye.factory.model.db.User;
+import com.rye.factory.persenter.BaseSourcePresenter;
 import com.rye.factory.utils.DiffUiDataCallback;
 import java.util.List;
 
@@ -25,19 +16,18 @@ import java.util.List;
  * CreateBy ShuQin
  * at 2020/1/22
  */
-public class ContactPresenter extends BaseRecyclerPresenter<User,ContactContract.View>
+public class ContactPresenter extends BaseSourcePresenter<User,User,ContactDataSource,ContactContract.View>
         implements ContactContract.Presenter ,DataSource.SuccessedCallback<List<User>>{
-    private   ContactDataSource mSources;
+
     public ContactPresenter(ContactContract.View view) {
-        super(view);
-        mSources=new ContactRepository();
+        //初始化数据
+        super(new ContactRepository(),view);
     }
 
     @Override
     public void start() {
         super.start();
-        //本地查询数据库
-         mSources.load(this);
+        //本地数据已经交由父类处理
         //查询网络数据
         UserHelper.refreshContacts();
     }
@@ -77,10 +67,4 @@ public class ContactPresenter extends BaseRecyclerPresenter<User,ContactContract
         refreshData(result,users);
     }
 
-    @Override
-    public void destroy() {
-        super.destroy();
-        //当界面销毁时，把监听也进行销毁----------防止内存泄漏
-        mSources.dispose();
-    }
 }
