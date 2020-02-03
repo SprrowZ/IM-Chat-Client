@@ -1,6 +1,6 @@
 package com.rye.catcher.activities;
 
-import androidx.appcompat.app.AppCompatActivity;
+
 import androidx.fragment.app.Fragment;
 
 import android.content.Context;
@@ -8,13 +8,14 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
 
-import com.raizlabs.android.dbflow.sql.language.Operator;
 import com.rye.catcher.R;
 import com.rye.catcher.common.app.BaseActivity;
 import com.rye.catcher.factory.model.Author;
 import com.rye.catcher.frags.message.ChatGroupFragment;
 import com.rye.catcher.frags.message.ChatUserFragment;
 import com.rye.factory.model.db.Group;
+import com.rye.factory.model.db.Message;
+import com.rye.factory.model.db.Session;
 
 public class MessageActivity extends BaseActivity {
     //聊天人的id，也可能是群
@@ -24,6 +25,20 @@ public class MessageActivity extends BaseActivity {
 
     private String mReceiverId;
     private boolean mIsGroup;
+
+    /**
+     * 单聊入口   ---传递Session
+     * @param context
+     * @param
+     */
+    public static void show(Context context, Session session) {
+        if (session == null || context == null || session.getId() == null) return;
+        Intent intent = new Intent(context, MessageActivity.class);
+        intent.putExtra(KEY_RECEIVER_ID, session.getId());
+        intent.putExtra(KEY_RECEIVER_IS_GROUP, session.getReceiverType()== Message.RECEIVER_TYPE_GROUP);
+        context.startActivity(intent);
+    }
+
 
     /**
      * 单聊入口

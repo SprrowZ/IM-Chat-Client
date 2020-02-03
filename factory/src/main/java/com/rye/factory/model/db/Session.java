@@ -1,10 +1,15 @@
 package com.rye.factory.model.db;
 
+import android.text.TextUtils;
+
 import com.raizlabs.android.dbflow.annotation.Column;
 import com.raizlabs.android.dbflow.annotation.ForeignKey;
 import com.raizlabs.android.dbflow.annotation.PrimaryKey;
 import com.raizlabs.android.dbflow.annotation.Table;
 import com.raizlabs.android.dbflow.structure.BaseModel;
+import com.rye.factory.data.helper.GroupHelper;
+import com.rye.factory.data.helper.MessageHelper;
+import com.rye.factory.data.helper.UserHelper;
 import com.rye.factory.utils.DiffUiDataCallback;
 
 
@@ -186,8 +191,68 @@ public class Session extends BaseDbModel<Session> {
         return identify;
     }
 
+    /**
+     * 刷新会话对应的信息为当前的Message，important
+     */
     public void refreshToNow() {
-        // TODO: 2020/1/25  
+        Message message;
+        if (receiverType == Message.RECEIVER_TYPE_GROUP) {
+            //刷新当前对应的群的相关信息
+            message = MessageHelper.findLastWithGroup(id);
+
+            if (message == null) {//查不到最后一条消息
+                if (TextUtils.isEmpty(picture) || TextUtils.isEmpty(this.title)) {
+                    Group group = GroupHelper.findFromLocal(id);
+                    if (group != null) {
+                        this.picture = group.getPicture();
+                        this.title = group.getName();
+                    }
+                }
+                this.message = null;//...........
+                this.content = "";
+                this.modifyAt = new Date(System.currentTimeMillis());
+            } else {//本地有最后一条消息
+                if (TextUtils.isEmpty(picture) || TextUtils.isEmpty(this.title)) {
+                    Group group = message.getGroup();
+                    //消息中群是懒加载！！！必须重新load一次
+                    group.load();
+                    if (group != null) {
+                        this.picture = group.getPicture();
+                        this.title = group.getName();
+                    }
+                }
+                this.message = message;
+                this.content = message.getSampleContent();
+                this.modifyAt = message.getCreateAt();
+            }
+
+        } else {//和人聊天
+            message = MessageHelper.findLastWithUser(id);
+
+            if (message == null) {//消息可能被清空
+                if (TextUtils.isEmpty(picture) || TextUtils.isEmpty(this.title)) {
+                    User user = UserHelper.findFromLocal(id);
+                    if (user != null) {
+                        this.picture = user.getPortrait();
+                        this.title = user.getName();
+                    }
+                }
+                this.message = null;//...........
+                this.content = "";
+                this.modifyAt = new Date(System.currentTimeMillis());
+            } else {//有本地聊天记录
+                if (TextUtils.isEmpty(picture) || TextUtils.isEmpty(this.title)) {
+                    User other = message.getOther();
+                    other.load();//懒加载问题
+                    this.picture = other.getPortrait();
+                    this.title = other.getName();
+                }
+                this.message = message;
+                this.content = message.getSampleContent();
+                this.modifyAt = message.getCreateAt();
+            }
+
+        }
     }
 
 

@@ -9,5 +9,5 @@ import java.util.List;
  */
 public interface DbDataSource<Data> extends DataSource {
     //有一个基本的数据源加载方法，一般回调到Presenter
-    void load(SuccessedCallback<List<Data>> callback);
+    void load(SucceedCallback<List<Data>> callback);
 }

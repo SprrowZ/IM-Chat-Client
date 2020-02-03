@@ -11,7 +11,7 @@ public interface DataSource {
      * 同时继承两个接口，包含失败和成功的回调
      * @param <T>
      */
-    interface  Callback<T> extends SuccessedCallback<T>,FailedCallback{
+    interface  Callback<T> extends SucceedCallback<T>,FailedCallback{
 
     }
 
@@ -19,7 +19,7 @@ public interface DataSource {
      * 只关注成功的回调
      * @param <T>
      */
-    interface  SuccessedCallback<T>{
+    interface SucceedCallback<T>{
         void onDataLoaded(T t);
     }
 

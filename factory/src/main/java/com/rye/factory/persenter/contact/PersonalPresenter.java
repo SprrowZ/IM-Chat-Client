@@ -45,6 +45,7 @@ public class PersonalPresenter extends BasePresenter<PersonalContract.View>
         Run.onUiSync(new Action() {
             @Override
             public void call() {
+
                 final PersonalContract.View view = getView();
                 if (view == null)
                     return;

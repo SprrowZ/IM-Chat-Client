@@ -24,7 +24,7 @@ public abstract class ToolbarActivity extends BaseActivity {
      */
     protected void initToolbar( Toolbar toolbar){
         mToolbar=toolbar;
-        if (toolbar!=null){
+        if (toolbar!=null){//这哥十分重要！！！
             setSupportActionBar(mToolbar);
         }
         initTitleNeedBack();

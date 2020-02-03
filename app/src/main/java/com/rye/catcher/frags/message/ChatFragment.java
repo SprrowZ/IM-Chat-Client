@@ -15,14 +15,17 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.google.android.material.appbar.AppBarLayout;
+import com.google.android.material.appbar.CollapsingToolbarLayout;
 import com.rye.catcher.R;
 import com.rye.catcher.activities.MessageActivity;
-import com.rye.catcher.common.app.BaseFragment;
+import com.rye.catcher.common.app.PresenterFragment;
 import com.rye.catcher.common.widget.PortraitView;
 import com.rye.catcher.common.widget.adapter.TextWatcherApapter;
 import com.rye.catcher.common.widget.recycler.RecyclerAdapter;
+import com.rye.factory.model.api.message.MsgCreateModel;
 import com.rye.factory.model.db.Message;
 import com.rye.factory.model.db.User;
+import com.rye.factory.persenter.message.ChatContract;
 import com.rye.factory.persistence.Account;
 
 import net.qiujuer.genius.ui.compat.UiCompat;
@@ -38,7 +41,9 @@ import butterknife.OnClick;
  * at 2020/1/27
  * 单聊和群聊的父类
  */
-public abstract class ChatFragment extends BaseFragment implements AppBarLayout.OnOffsetChangedListener {
+public abstract class ChatFragment<InitModel> extends PresenterFragment<ChatContract.Presenter>
+        implements AppBarLayout.OnOffsetChangedListener,
+        ChatContract.View<InitModel> {
 
     protected String mReceiverId;
     protected Adapter mAdapter;
@@ -53,6 +58,8 @@ public abstract class ChatFragment extends BaseFragment implements AppBarLayout.
     EditText mContent;
     @BindView(R.id.btn_submit)
     View mSubmit;
+    @BindView(R.id.collapsingToolbarLayout)
+    CollapsingToolbarLayout mCollapsingBarLayout;
 
 
     @Override
@@ -60,6 +67,10 @@ public abstract class ChatFragment extends BaseFragment implements AppBarLayout.
         super.initArgs(bundle);
         mReceiverId = bundle.getString(MessageActivity.KEY_RECEIVER_ID);
 
+    }
+    @Override
+    protected int getContentLayoutId() {
+        return R.layout.fragment_chat_common;
     }
 
     @Override
@@ -72,6 +83,13 @@ public abstract class ChatFragment extends BaseFragment implements AppBarLayout.
         mAdapter = new Adapter();
         mRecycleView.setAdapter(mAdapter);
 
+    }
+
+    @Override
+    protected void initData() {
+        super.initData();
+        //进行初始化操作
+        mPresenter.start();
     }
 
     /**
@@ -124,6 +142,9 @@ public abstract class ChatFragment extends BaseFragment implements AppBarLayout.
     void onSubmitClick() {
         if (mSubmit.isActivated()) {
             //发送
+            String content=mContent.getText().toString();
+            mContent.setText("");
+            mPresenter.pushText(content);
         } else {
             onMoreClick();
         }
@@ -132,6 +153,17 @@ public abstract class ChatFragment extends BaseFragment implements AppBarLayout.
 
     private void onMoreClick() {
         // TODO: 2020/1/27
+    }
+
+
+    @Override
+    public RecyclerAdapter<Message> getRecyclerAdapter() {
+        return mAdapter;
+    }
+
+    @Override
+    public void onAdapterDataChanged() {
+        //没有占位布局，空实现
     }
 
     //内容适配器
@@ -223,9 +255,9 @@ public abstract class ChatFragment extends BaseFragment implements AppBarLayout.
         @OnClick(R.id.im_portrait)
         void onRePushClick() {
             //重新发送
-            if (mLoading != null) {
-                //必须是右边才有可能重新发送
-                // TODO: 2020/1/27
+            if (mLoading != null &&mPresenter.rePush(mData)) {
+                //必须是右边才有可能重新发送,状态改变需要重新刷新界面
+                updataData(mData);
             }
         }
     }
