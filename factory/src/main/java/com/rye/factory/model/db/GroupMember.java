@@ -32,7 +32,7 @@ public class GroupMember extends BaseDbModel<GroupMember> {
     private boolean isOwner;// 是否是群创建者
     @Column
     private Date modifyAt;// 更新时间
-
+    // TODO: 2020/2/1 --DBFlow:stubbedRelationship--懒加载？ 
     @ForeignKey(tableClass = Group.class, stubbedRelationship = true)
     private Group group;// 对应的群外键
 

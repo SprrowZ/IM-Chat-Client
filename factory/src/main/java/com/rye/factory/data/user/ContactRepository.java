@@ -3,7 +3,6 @@ package com.rye.factory.data.user;
 
 import com.raizlabs.android.dbflow.sql.language.SQLite;
 
-import com.rye.catcher.factory.data.DataSource;
 import com.rye.factory.data.BaseDbRepository;
 import com.rye.factory.model.db.User;
 import com.rye.factory.model.db.User_Table;
@@ -21,7 +20,7 @@ public class ContactRepository extends BaseDbRepository<User> implements Contact
 
 
     @Override
-    public void load(DataSource.SuccessedCallback<List<User>> callback) {
+    public void load(SucceedCallback<List<User>> callback) {
         super.load(callback);
         SQLite.select()
                 .from(User.class)

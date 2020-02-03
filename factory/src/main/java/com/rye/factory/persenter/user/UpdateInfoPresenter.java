@@ -39,7 +39,13 @@ public class UpdateInfoPresenter extends BasePresenter<UpdateInfoContract.View>
                    public void run() {
                         String url= UpLoadHelper.uploadPortrait(photoFilePath);
                         if (TextUtils.isEmpty(url)){
-                            view.showError(R.string.data_upload_error);
+                            Run.onUiAsync(new Action() {
+                                @Override
+                                public void call() {
+                                    view.showError(R.string.data_upload_error);
+                                }
+                            });
+
                         }else{
                             //构建model
                             UserUpdateModel model=new UserUpdateModel("",url,desc,

@@ -10,12 +10,12 @@ import java.util.List;
 /**
  * CreateBy ShuQin
  * at 2020/1/26
- * 数据操作基础的Presenter
+ * 对数据库数据监听的基本Presenter
  */
 // TODO: 2020/1/26 ViewModel和Data应该是可以统一的 
 public abstract class BaseSourcePresenter<Data,ViewModel,Source extends DbDataSource<Data>,
         View extends BaseContract.RecyclerView> extends BaseRecyclerPresenter<ViewModel,View>
-implements DataSource.SuccessedCallback<List<Data>> {//回调交给上层处理，所以这里是个抽象类
+implements DataSource.SucceedCallback<List<Data>> {//回调交给上层处理，所以这里是个抽象类
     protected  Source mSource;
     public BaseSourcePresenter(Source source,View view) {
         super(view);

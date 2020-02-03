@@ -4,7 +4,13 @@ import com.rye.factory.model.api.RspModel;
 import com.rye.factory.model.api.account.AccountRspModel;
 import com.rye.factory.model.api.account.LoginModel;
 import com.rye.factory.model.api.account.RegisterModel;
+import com.rye.factory.model.api.group.GroupCreateModel;
+import com.rye.factory.model.api.group.GroupMemberAddModel;
+import com.rye.factory.model.api.message.MsgCreateModel;
 import com.rye.factory.model.api.user.UserUpdateModel;
+import com.rye.factory.model.card.GroupCard;
+import com.rye.factory.model.card.GroupMemberCard;
+import com.rye.factory.model.card.MessageCard;
 import com.rye.factory.model.card.UserCard;
 
 import java.util.List;
@@ -84,4 +90,61 @@ public interface RemoteService {
      */
     @GET("user/{userId}")
     Call<RspModel<UserCard>> userFind(@Path("userId") String id);
+
+    /**
+     * 发送消息
+     * @param
+     * @return
+     */
+    @POST("msg")
+    Call<RspModel<MessageCard>> msgPush(@Body  MsgCreateModel model);
+
+    /**
+     * 创建群
+     * @param model
+     * @return
+     */
+    @POST("group")
+    Call<RspModel<GroupCard>> groupCreate(@Body GroupCreateModel model);
+
+    /**
+     * 拉取一个群的信息
+     * @param groupId
+     * @return
+     */
+    @GET("group/{groupId}")
+    Call<RspModel<GroupCard>> groupFind(@Path("groupId")String groupId);
+
+    /**
+     * 群搜索接口
+     * @param name
+     * @return
+     */
+    @GET("group/search/{name}")
+    Call<RspModel<List<GroupCard>>> groupSearch(@Path(value ="name",encoded = true)String name);
+
+    /**
+     * 我的群列表
+     * @param date
+     * @return
+     */
+    @GET("group/list/{date}")
+    Call<RspModel<List<GroupCard>>> groups(@Path(value = "date",encoded =true) String date);
+
+    /**
+     * 查找一个群的成员
+     * @param groupId
+     * @return
+     */
+    @GET("group/{groupId}/member")
+    Call<RspModel<List<GroupMemberCard>>> groupMembers(@Path("groupId") String groupId);
+
+    /**
+     * 给群添加成员
+     * @param groupId
+     * @param model
+     * @return
+     */
+    @POST("group/{groupId}/member")
+    Call<RspModel<List<GroupMemberCard>>> groupMemberAdd(@Path("groupId") String groupId, GroupMemberAddModel model);
 }

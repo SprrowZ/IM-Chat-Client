@@ -8,9 +8,11 @@ import com.rye.factory.model.api.RspModel;
 import com.rye.factory.model.api.user.UserUpdateModel;
 import com.rye.factory.model.card.UserCard;
 import com.rye.factory.model.db.User;
+import com.rye.factory.model.db.view.UserSampleModel;
 import com.rye.factory.model.db.User_Table;
 import com.rye.factory.net.NetWork;
 import com.rye.factory.net.RemoteService;
+import com.rye.factory.persistence.Account;
 
 import java.io.IOException;
 import java.util.List;
@@ -169,7 +171,7 @@ public class UserHelper {
         return user;
     }
 
-    private static User findFromLocal(String id) {
+    public static User findFromLocal(String id) {
         return SQLite.select()
                 .from(User.class)
                 .where(User_Table.id.eq(id))
@@ -193,4 +195,33 @@ public class UserHelper {
         return null;
     }
 
+    /**
+     * 查询联系人
+     * @return
+     */
+    public static List<User> getContact(){
+     return     SQLite.select()
+                .from(User.class)
+                .where(User_Table.isFollow.eq(true))
+                .and(User_Table.id.notEq(Account.getUserId()))
+                .orderBy(User_Table.name, true)
+                .limit(100)
+                .queryList();
+    }
+
+    /**
+     * 获取一个简单联系人列表
+     * @return
+     */
+    // TODO: 2020/2/1 待了解DBFlow的这种操作 
+    public static List<UserSampleModel> getSampleontact(){
+        return     SQLite.select(User_Table.id.withTable().as("id"),
+                User_Table.name.withTable().as("name"),
+                User_Table.portrait.withTable().as("portrait"))
+                .from(User.class)
+                .where(User_Table.isFollow.eq(true))
+                .and(User_Table.id.notEq(Account.getUserId()))
+                .orderBy(User_Table.name, true)
+                .queryCustomList(UserSampleModel.class);
+    }
 }

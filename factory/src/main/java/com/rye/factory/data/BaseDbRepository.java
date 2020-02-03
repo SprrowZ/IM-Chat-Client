@@ -26,11 +26,14 @@ import java.util.List;
  * CreateBy ShuQin
  * at 2020/1/26
  */
-public abstract class BaseDbRepository<Data extends BaseDbModel<Data>> implements DbDataSource<Data>,
-        DbHelper.ChangeListener<Data>, QueryTransaction.QueryResultListCallback<Data> {
-  private   SuccessedCallback<List<Data>> callback;
+// TODO: 2020/1/29    QueryTransaction.QueryResultListCallback<Data>--看看能否将这个抽离出去
+public abstract class BaseDbRepository<Data extends BaseDbModel<Data>>
+        implements DbDataSource<Data>,
+        DbHelper.ChangeListener<Data>,
+        QueryTransaction.QueryResultListCallback<Data> {
+  private SucceedCallback<List<Data>> callback;
 
-  private final List<Data>  dataList =new LinkedList<>();
+  protected final LinkedList<Data>  dataList =new LinkedList<>();
 
   private Class<Data> dataClass;//当前泛型真实的class信息
 
@@ -42,7 +45,7 @@ public abstract class BaseDbRepository<Data extends BaseDbModel<Data>> implement
     }
 
     @Override
-    public void load(SuccessedCallback<List<Data>> callback) {
+    public void load(SucceedCallback<List<Data>> callback) {
        this.callback=callback;
        //添加数据监听器
         registerDbChangedListener();
@@ -99,7 +102,7 @@ public abstract class BaseDbRepository<Data extends BaseDbModel<Data>> implement
     }
 
     private void notifyDataChanged(){
-        SuccessedCallback<List<Data>> callback=this.callback;
+        SucceedCallback<List<Data>> callback=this.callback;
         if (callback!=null){
             callback.onDataLoaded(dataList);
         }
@@ -116,7 +119,7 @@ public abstract class BaseDbRepository<Data extends BaseDbModel<Data>> implement
     }
 
 
-    private void insertOrUpdate(Data data) {
+    protected void insertOrUpdate(Data data) {
         int index = indexOf(data);
         if (index >= 0) {//下标大于0，说明是更新
             replace(index, data);
@@ -125,7 +128,7 @@ public abstract class BaseDbRepository<Data extends BaseDbModel<Data>> implement
         }
     }
 
-    private void insert(Data data) {
+    protected void insert(Data data) {
         dataList.add(data);
     }
 

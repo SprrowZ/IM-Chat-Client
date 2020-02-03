@@ -139,7 +139,7 @@ public class MainActivity extends BaseActivity implements
        //浮动按钮点击时，判断是添加人还是群
         if (Objects.equals(mNavHelper.getCurrentTab().extra,R.string.title_group)){
             //打开创建群的界面
-            // TODO: 2020/1/18
+          GroupCreateActivity.show(this);
         }else{
             SearchActivity.show(this,SearchActivity.TYPE_USER);
         }

@@ -19,7 +19,7 @@
         android:theme="@style/AppTheme.TransStatusBar"
         android:usesCleartextTraffic="true">
 
-       <!-- Android7 FileProvider 适配 -->
+        <!-- Android7 FileProvider 适配 -->
         <provider
             android:name=".AppFileProvider"
             android:authorities="${applicationId}.provider"
@@ -71,13 +71,17 @@
             android:label="@string/title_search"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.TransStatusBar" />
-        <activity android:name=".activities.MessageActivity"
+        <activity
+            android:name=".activities.MessageActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.Message"
-            />
-        <activity android:name=".activities.PersonalActivity"
+            android:theme="@style/AppTheme.Message" />
+        <activity
+            android:name=".activities.PersonalActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.TransStatusBar"
+            android:theme="@style/AppTheme.TransStatusBar" />
+        <activity android:name=".activities.GroupCreateActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.GroupCreate"
             />
     </application>
 

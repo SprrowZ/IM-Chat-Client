@@ -48,4 +48,13 @@ public abstract class PresenterFragment<T extends  BaseContract.Presenter>
         //View中设置Presenter
        mPresenter=presenter;
     }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        if (mPresenter!=null){
+            mPresenter.destroy();
+        }
+
+    }
 }
