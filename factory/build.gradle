@@ -34,7 +34,7 @@ dependencies {
     api "com.aliyun.dpa:oss-android-sdk:$rootProject.ext.ossVersion"
     api "com.squareup.retrofit2:retrofit:$rootProject.ext.retrofitVersion"
     api "com.squareup.retrofit2:converter-gson:$rootProject.ext.retrofitVersion"
-    api "com.google.code.gson:gson:$rootProject.ext.gsonVersion"
+
 
     api project(':common')
     api "net.qiujuer.genius:kit-reflect:$rootProject.ext.geniusVersion"

@@ -46,7 +46,7 @@ public class zApplication extends Application {
      * 得到缓存目录
      * @return
      */
-  private static File  getCacheDirFile(){
+  public static File  getCacheDirFile(){
       return getInstance().getCacheDir();
   }
 
@@ -87,6 +87,7 @@ public class zApplication extends Application {
       return path.getAbsoluteFile();
 
    }
+
 
 
     /**
