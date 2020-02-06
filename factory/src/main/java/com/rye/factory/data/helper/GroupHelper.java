@@ -220,12 +220,13 @@ public class GroupHelper {
     // TODO: 2020/2/1 DBFlow的关联查询
     public static List<MemberUserModel> getMemberUsers(String groupId, int size) {
         return SQLite.select(GroupMember_Table.alias.withTable().as("alias"),
-                User_Table.id.withTable().as("id"),
+                User_Table.id.withTable().as("userId"),
                 User_Table.name.withTable().as("name"),
                 User_Table.portrait.withTable().as("portrait"))
                 .from(GroupMember.class)
                 .join(User.class, Join.JoinType.INNER)
-                .on(GroupMember_Table.group_id.withTable().eq(User_Table.id.withTable()))
+                .on(GroupMember_Table.user_id.withTable().eq(User_Table.id.withTable()))
+                .where(GroupMember_Table.group_id.withTable().eq(groupId))
                 .orderBy(GroupMember_Table.user_id,true)
                 .limit(size)
                 .queryCustomList(MemberUserModel.class);

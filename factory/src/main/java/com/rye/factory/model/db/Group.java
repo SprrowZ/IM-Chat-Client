@@ -164,7 +164,7 @@ public class Group extends BaseDbModel<Group> implements Serializable {
     private long groupMemberCount = -1;
     //获取当前群的成员数量，使用内存缓存；
     // 可以抽离成群的属性？？？--------------------
-    public long getMemberCount() {
+    public long getGroupMemberCount() {
         if (groupMemberCount == -1) {
             //没有初始化
             groupMemberCount = GroupHelper.getMemberCount(id);

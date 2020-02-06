@@ -64,6 +64,15 @@ public class MsgCreateModel {
         return receiverType;
     }
 
+    /**
+     * 刷新卡片内容，主要是图片、录音消息的本地、网络地址的替换
+     */
+    public void refreshByCard() {
+        if (card==null) return;
+        this.content=card.getContent();
+        this.attach=card.getAttach();
+    }
+
     public static class Builder{
         private MsgCreateModel model;
         public Builder(){

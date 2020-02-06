@@ -15,9 +15,9 @@ import java.util.List;
  */
 public interface ChatContract {
     interface  Presenter extends BaseContract.Presenter{
-        // TODO: 2020/1/27 ---能否将三个方法合并成一个，将处理逻辑抛给上层？
+        // TODO: 2020/1/27 ---能否将三个方法合并成一个，将处理逻辑抛给上层？闲的你？
      void pushText(String content);
-     void pushAudio(String path);
+     void pushAudio(String path,long time);
      void pushImages(String[] paths);
      
      boolean rePush(Message message);
@@ -33,6 +33,6 @@ public interface ChatContract {
     //群聊天的界面
     interface GroupView extends View<Group>{
         void showAdminOption(boolean isAdmin);//管理员显示添加人员的按钮
-        void onInitGroupMember(List<MemberUserModel> members,int moreCount);
+        void onInitGroupMember(List<MemberUserModel> members,long moreCount);
     }
 }

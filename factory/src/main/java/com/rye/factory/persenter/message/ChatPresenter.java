@@ -1,5 +1,7 @@
 package com.rye.factory.persenter.message;
 
+import android.text.TextUtils;
+
 import androidx.recyclerview.widget.DiffUtil;
 
 import com.rye.factory.data.helper.MessageHelper;
@@ -40,13 +42,30 @@ public class ChatPresenter<View extends ChatContract.View>
     }
 
     @Override
-    public void pushAudio(String path) {
-        // TODO: 2020/1/27  
+    public void pushAudio(String path, long time) {
+        if (TextUtils.isEmpty(path)) return;
+
+        MsgCreateModel model = new MsgCreateModel.Builder()
+                .receiver(mReceiverId, mReceiverType)
+                .content(path, Message.TYPE_AUDIO)
+                .attach(String.valueOf(time))
+                .build();
+        //进行网络发送
+        MessageHelper.push(model);
+
     }
 
     @Override
     public void pushImages(String[] paths) {
-// TODO: 2020/1/27  
+        if (paths == null || paths.length == 0) return;
+
+        for (String path : paths) {//现在还是本地地址，需要替换成oss地址，也就是要先上传
+            MsgCreateModel model = new MsgCreateModel.Builder()
+                    .receiver(mReceiverId, mReceiverType)
+                    .content(path, Message.TYPE_PIC)
+                    .build();
+            MessageHelper.push(model);
+        }
     }
 
     @Override

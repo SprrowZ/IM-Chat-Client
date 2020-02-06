@@ -2,7 +2,6 @@ package com.rye.factory.data.group;
 
 import android.text.TextUtils;
 
-import com.raizlabs.android.dbflow.list.IFlowCursorIterator;
 import com.raizlabs.android.dbflow.sql.language.SQLite;
 import com.rye.factory.data.BaseDbRepository;
 import com.rye.factory.data.helper.GroupHelper;
@@ -36,7 +35,7 @@ public class GroupsRepository extends BaseDbRepository<Group> implements GroupsD
         //一种是被加入群，第二种是直接建立一个群
         //无论什么情况，拿到的都只是群的信息，没有成员信息
         //需要进行成员信息初始化操作
-        if (group.getMemberCount()>0){
+        if (group.getGroupMemberCount()>0){
             //已经初始化了成员的信息
             group.holder=buildGroupHolder(group);
         }else{

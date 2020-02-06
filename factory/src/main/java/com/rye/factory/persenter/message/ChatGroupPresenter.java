@@ -4,6 +4,10 @@ import com.rye.factory.data.helper.GroupHelper;
 import com.rye.factory.data.message.MessageGroupRepository;
 import com.rye.factory.model.db.Group;
 import com.rye.factory.model.db.Message;
+import com.rye.factory.model.db.view.MemberUserModel;
+import com.rye.factory.persistence.Account;
+
+import java.util.List;
 
 /**
  * CreateBy ShuQin
@@ -23,6 +27,22 @@ public class ChatGroupPresenter extends ChatPresenter<ChatContract.GroupView>
         super.start();
 //拿群的信息
         Group group= GroupHelper.findFromLocal(mReceiverId);
-        getView().onInit(group);
+        if (group!=null){
+            ChatContract.GroupView view=getView();
+            boolean isAdmin= Account.getUserId().equalsIgnoreCase(group.getOwner().getId());
+            //是否显示加人按钮
+            view.showAdminOption(isAdmin);
+            getView().onInit(group);
+            //成员初始化
+            List<MemberUserModel> models=group.getLatelyGroupMembers();
+            final long memberCount=group.getGroupMemberCount();
+            long moreCount=memberCount-models.size();
+            view.onInitGroupMember(models,moreCount);
+
+
+        }
+
+
+
     }
 }

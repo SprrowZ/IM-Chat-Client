@@ -36,17 +36,14 @@ public class MessageGroupRepository extends BaseDbRepository<Message>
     public void load(SucceedCallback<List<Message>> callback) {
         super.load(callback);
 
-
-//        SQLite.select().from(Message.class)
-//                .where(OperatorGroup.clause()
-//                        .and(Message_Table.sender_id.eq(receiverId))
-//                        .and(Message_Table.group_id.isNull()))
-//                .or(Message_Table.receiver_id.eq(receiverId))
-//                .orderBy(Message_Table.createAt,false)
-//                .limit(30)
-//                .async()
-//                .queryListResultCallback(this)
-//                .execute();
+       //无论是直接发还是别人发，只要是发到这个群的，group_id就是receiverId
+        SQLite.select().from(Message.class)
+                .where(Message_Table.group_id.eq(receiverId))
+                .orderBy(Message_Table.createAt,false)
+                .limit(30)
+                .async()
+                .queryListResultCallback(this)
+                .execute();
 
     }
 
@@ -57,10 +54,9 @@ public class MessageGroupRepository extends BaseDbRepository<Message>
      */
     @Override
     protected boolean isRequired(Message message) {
-        //receiverId,如果是发送者，那么Group==null的情况下，一定是发送给我的信息
-        //如果消息的接受者不为空，那么消息一定是发给某个人的
-        //如果这个某个人是receiverId，那么就是我需要的信息
-        return false;
+        //消息Group不为空，说明是发送到群的，群Id属于我们想要的
+        return message.getGroup()!=null&&
+                receiverId.equalsIgnoreCase(message.getGroup().getId());
     }
 
     @RequiresApi(api = Build.VERSION_CODES.N)
