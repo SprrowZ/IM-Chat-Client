@@ -2,6 +2,8 @@ package com.rye.catcher.frags.main;
 
 
 import android.app.Fragment;
+import android.text.Spannable;
+import android.text.SpannableString;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.TextView;
@@ -19,11 +21,14 @@ import com.rye.catcher.common.widget.EmptyView;
 
 import com.rye.catcher.common.widget.PortraitView;
 import com.rye.catcher.common.widget.recycler.RecyclerAdapter;
+import com.rye.catcher.face.Face;
 import com.rye.catcher.utils.DateTimeUtil;
 import com.rye.factory.model.db.Session;
 
 import com.rye.factory.persenter.message.SessionContract;
 import com.rye.factory.persenter.message.SessionPresenter;
+
+import net.qiujuer.genius.ui.Ui;
 
 import butterknife.BindView;
 
@@ -124,7 +129,12 @@ implements SessionContract.View {
             //--PortraitView里新增方法
             mPortraitView.setUp(Glide.with(ActiveFragment.this), session.getPicture());
             mName.setText(session.getTitle());
-            mContent.setText(TextUtils.isEmpty(session.getContent())?"":session.getContent());
+             String str=TextUtils.isEmpty(session.getContent())?"":session.getContent();
+             Spannable spannable=new SpannableString(str);
+            //解析表情资源
+            Face.decode(mContent,spannable, (int) mContent.getTextSize());
+            //把内容设置到布局上
+            mContent.setText(spannable);
             mTime.setText(DateTimeUtil.getSampleDate(session.getModifyAt()));
         }
 

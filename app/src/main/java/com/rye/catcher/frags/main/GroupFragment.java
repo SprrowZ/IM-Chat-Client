@@ -2,6 +2,7 @@ package com.rye.catcher.frags.main;
 
 
 import android.app.Fragment;
+import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 
@@ -120,6 +121,7 @@ public class GroupFragment extends PresenterFragment<GroupsContract.Presenter> i
             mDesc.setText(group.getDesc());
 
             if (group.holder!=null && group.holder instanceof String){
+                Log.d("GROUP_HOLDER",group.holder.toString());
                 mMember.setText((String)group.holder);
             }else{
                 mMember.setText("");

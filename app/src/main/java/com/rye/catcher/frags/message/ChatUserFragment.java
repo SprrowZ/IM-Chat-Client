@@ -38,6 +38,12 @@ public class ChatUserFragment extends ChatFragment<User> implements ChatContract
    @BindView(R.id.im_portrait)
     PortraitView mPortrait;
     private MenuItem mUserInfoMenuItem;
+
+    @Override
+    protected int getHeaderLayoutId() {
+        return R.layout.lay_chat_header_user;
+    }
+
     @Override
     protected void initWidget(View root) {
         super.initWidget(root);
