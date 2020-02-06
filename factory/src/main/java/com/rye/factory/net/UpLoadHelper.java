@@ -25,7 +25,7 @@ public class UpLoadHelper {
 
     private static final String TAG=UpLoadHelper.class.getSimpleName();
 
-   private static String endpoint = "http://oss-cn-beijing.aliyuncs.com";
+   public static final String ENDPOINT = "http://oss-cn-beijing.aliyuncs.com";
    //上传的仓库名
    private static final  String BUCKET_NAME="ryecatcher";
 
@@ -40,7 +40,7 @@ public class UpLoadHelper {
         conf.setMaxConcurrentRequest(5); // 最大并发请求书，默认5个。
         conf.setMaxErrorRetry(2); // 失败后最大重试次数，默认2次。
 
-        return new OSSClient(Factory.app(), endpoint, credentialProvider, conf);
+        return new OSSClient(Factory.app(), ENDPOINT, credentialProvider, conf);
     }
 
     /**

@@ -8,6 +8,8 @@ import android.widget.LinearLayout;
 
 import androidx.annotation.Nullable;
 
+import net.qiujuer.widget.airpanel.AirPanelLinearLayout;
+
 /**
  * CreateBy ShuQin
  * at 2020/1/27
@@ -15,7 +17,7 @@ import androidx.annotation.Nullable;
  * 可不用覆写，
  */
 // TODO: 2020/1/27 可以不用覆写
-public class MessageLayout extends LinearLayout {
+public class MessageLayout extends AirPanelLinearLayout {
 
     public MessageLayout(Context context) {
         super(context);

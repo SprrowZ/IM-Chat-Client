@@ -18,7 +18,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme.TransStatusBar"
         android:usesCleartextTraffic="true">
-
+        <activity android:name=".activities.GroupMemberActivity"></activity>
         <!-- Android7 FileProvider 适配 -->
         <provider
             android:name=".AppFileProvider"
@@ -43,7 +43,6 @@
             android:label="AppMessageReceiverService"
             android:permission="1000" />
 
-        <activity android:name=".activities.UserActivity" />
         <activity
             android:name=".LaunchActivity"
             android:screenOrientation="portrait"
@@ -62,6 +61,11 @@
             android:name=".activities.AccountActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.Account" />
+
+        <activity android:name=".activities.UserActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.TransStatusBar"
+            />
         <activity
             android:name="com.yalantis.ucrop.UCropActivity"
             android:screenOrientation="portrait"
@@ -74,15 +78,17 @@
         <activity
             android:name=".activities.MessageActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.Message" />
+            android:theme="@style/AppTheme.Message"
+            android:windowSoftInputMode="adjustResize"
+            />
         <activity
             android:name=".activities.PersonalActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.TransStatusBar" />
-        <activity android:name=".activities.GroupCreateActivity"
+        <activity
+            android:name=".activities.GroupCreateActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.GroupCreate"
-            />
+            android:theme="@style/AppTheme.GroupCreate" />
     </application>
 
 </manifest>

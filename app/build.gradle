@@ -60,4 +60,5 @@ dependencies {
     // 个推-----版本需要更新
     implementation "com.getui:sdk:$rootProject.ext.getuiVersion"
 
+
 }
