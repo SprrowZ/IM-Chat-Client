@@ -7,7 +7,9 @@ import android.animation.ArgbEvaluator;
 import android.animation.ObjectAnimator;
 import android.animation.ValueAnimator;
 import android.graphics.drawable.ColorDrawable;
+import android.graphics.drawable.Drawable;
 import android.text.TextUtils;
+import android.util.Log;
 import android.util.Property;
 import android.view.View;
 
@@ -15,6 +17,7 @@ import com.rye.catcher.activities.AccountActivity;
 import com.rye.catcher.activities.MainActivity;
 import com.rye.catcher.frags.assist.PermissionsFragment;
 import com.rye.catcher.common.app.BaseActivity;
+import com.rye.catcher.other.evalators.AlphaEvaluator;
 import com.rye.factory.persistence.Account;
 
 import net.qiujuer.genius.res.Resource;
@@ -23,7 +26,7 @@ import net.qiujuer.genius.ui.compat.UiCompat;
 // TODO: 2020/1/11 Launch待改造----有点子low-- 
 public class LaunchActivity extends BaseActivity {
 
-    private ColorDrawable mBgDrawable;
+    private Drawable mBgDrawable;
     // 是否已经得到PushId
     private boolean mAlreadyGotPushReceiverId = false;
     @Override
@@ -37,7 +40,10 @@ public class LaunchActivity extends BaseActivity {
 
         View root = findViewById(R.id.activity_launch);
         int color = UiCompat.getColor(getResources(), R.color.colorPrimary);
-        ColorDrawable drawable = new ColorDrawable(color);
+        Drawable drawable = null;
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.LOLLIPOP) {
+            drawable = getDrawable(R.drawable.splash_one);
+        }
         //设置背景色
         root.setBackground(drawable);
         mBgDrawable = drawable;
@@ -49,7 +55,7 @@ public class LaunchActivity extends BaseActivity {
         //开启动画,执行到百分之五十等待pushId
         // 动画进入到50%等待PushId获取到
         // 检查等待状态
-        startAnim(0.5f, this::waitPushReceiverId);
+        startAnim(1f, this::waitPushReceiverId);
     }
 
     @Override
@@ -68,7 +74,7 @@ public class LaunchActivity extends BaseActivity {
     private void waitPushReceiverIdDone() {
         // 标志已经得到PushId
         mAlreadyGotPushReceiverId = true;
-        startAnim(1f, this::reallySkip);
+        reallySkip();
     }
     /**
      * 等待个推sdk对我们的pushId进行设置
@@ -119,15 +125,14 @@ public class LaunchActivity extends BaseActivity {
      * @param endCallback
      */
     private void startAnim(float endProgress, final Runnable endCallback) {
-        int finalColor = Resource.Color.WHITE;
+        Log.i("LaunchActivity","---startAnim");
         //运算当前进度的颜色--因为颜色值是渐变的
         // TODO: 2020/1/11 待了解ArgbEvaluator以及和属性动画的搭配使用
-        ArgbEvaluator evaluator = new ArgbEvaluator();
-        int endColor = (int) evaluator.evaluate(endProgress, mBgDrawable.getColor(), finalColor);
+        AlphaEvaluator evaluator = new AlphaEvaluator();
         //构建一个属性动画，这个传入Property的倒是第一次见。。
-        ValueAnimator valueAnimator = ObjectAnimator.ofObject(this, property, evaluator, endColor);
-        valueAnimator.setDuration(1500);
-        valueAnimator.setIntValues(mBgDrawable.getColor(), endColor);
+        ValueAnimator valueAnimator = ObjectAnimator.ofObject(this, property, evaluator,0f,endProgress);
+        valueAnimator.setDuration(1000);
+       // valueAnimator.setIntValues(mBgDrawable.getAlpha());
         //有两个监听器，这里别用错了
         valueAnimator.addListener(new AnimatorListenerAdapter() {
             @Override
@@ -141,17 +146,18 @@ public class LaunchActivity extends BaseActivity {
     }
 
     /**
-     * 设置渐变的属性ORZ
+     * 设置渐变的属性ORZ ---改为Alpha
      */
-    private Property<LaunchActivity, Object> property = new Property<LaunchActivity, Object>(Object.class, "color") {
+    private Property<LaunchActivity, Object> property = new Property<LaunchActivity, Object>(Object.class, "alpha") {
         @Override
         public Object get(LaunchActivity object) {
-            return object.mBgDrawable.getColor();
+            return object.mBgDrawable.getAlpha();
         }
 
         @Override
         public void set(LaunchActivity object, Object value) {
-            object.mBgDrawable.setColor((Integer) value);
+            object.mBgDrawable.setAlpha((int) ((Float)value*255));
+            Log.i("LaunchActivity",(int) ((Float)value*255)+"");
         }
     };
 

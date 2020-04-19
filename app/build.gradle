@@ -41,6 +41,7 @@ dependencies {
 
     //factory已经引用了common了
     implementation project(':factory')
+
     //这个应该也是可以替换的吧
     implementation "com.jakewharton:butterknife:$rootProject.ext.butterknifeVersion"
     implementation 'androidx.appcompat:appcompat:1.0.2'
@@ -48,7 +49,7 @@ dependencies {
 
 
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
-    annotationProcessor "com.github.bumptech.glide:compiler:$rootProject.ext.glideVersion"
+
     //申请权限的三方框架，我们先用Google提供的EasyPermission来实现权限申请
     implementation 'com.yanzhenjie:permission:2.0.0-rc11'
 

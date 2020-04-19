@@ -1,11 +1,13 @@
 package com.rye.catcher.frags.message;
 
+import android.os.Build;
 import android.os.Bundle;
 
 import android.text.Editable;
 import android.text.Spannable;
 import android.text.SpannableString;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewStub;
 import android.widget.EditText;
@@ -14,7 +16,9 @@ import android.widget.TextView;
 
 import androidx.annotation.LayoutRes;
 import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.widget.Toolbar;
+import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -32,7 +36,6 @@ import com.rye.catcher.common.widget.adapter.TextWatcherApapter;
 import com.rye.catcher.common.widget.recycler.RecyclerAdapter;
 import com.rye.catcher.face.Face;
 import com.rye.catcher.frags.panel.PanelFragment;
-import com.rye.factory.model.api.message.MsgCreateModel;
 import com.rye.factory.model.db.Message;
 import com.rye.factory.model.db.User;
 import com.rye.factory.persenter.message.ChatContract;
@@ -48,6 +51,7 @@ import net.qiujuer.widget.airpanel.AirPanel;
 import net.qiujuer.widget.airpanel.Util;
 
 import java.io.File;
+import java.util.List;
 import java.util.Objects;
 
 import butterknife.BindView;
@@ -62,7 +66,10 @@ public abstract class ChatFragment<InitModel> extends PresenterFragment<ChatCont
         implements AppBarLayout.OnOffsetChangedListener,
         ChatContract.View<InitModel>, PanelFragment.PanelCallback {
 
+    private static final String TAG="ChatFragment";
+
     protected String mReceiverId;
+    protected boolean fromContact=false;
     protected Adapter mAdapter;
 
     @BindView(R.id.toolbar)
@@ -85,12 +92,13 @@ public abstract class ChatFragment<InitModel> extends PresenterFragment<ChatCont
 
     FileCache<AudioHolder> mAudioFileCache;
 
-     private  AudioPlayHelper<AudioHolder> mAudioPlayer;
+    private AudioPlayHelper<AudioHolder> mAudioPlayer;
+
     @Override
     protected void initArgs(Bundle bundle) {
         super.initArgs(bundle);
         mReceiverId = bundle.getString(MessageActivity.KEY_RECEIVER_ID);
-
+        fromContact=bundle.getBoolean(MessageActivity.KEY_FROM_CONTACT);
     }
 
     @Override   //final，子类不可再覆写
@@ -102,6 +110,7 @@ public abstract class ChatFragment<InitModel> extends PresenterFragment<ChatCont
     @LayoutRes
     protected abstract int getHeaderLayoutId();
 
+    @RequiresApi(api = Build.VERSION_CODES.M)
     @Override
     protected void initWidget(View root) {
         //必须在ButterKnife.bind前拿到布局
@@ -119,7 +128,7 @@ public abstract class ChatFragment<InitModel> extends PresenterFragment<ChatCont
             @Override
             public void onPanelStateChanged(boolean isOpen) {
                 //面板改变
-                if (isOpen){
+                if (isOpen) {
                     onBottomPanelOpened();
                 }
             }
@@ -130,7 +139,7 @@ public abstract class ChatFragment<InitModel> extends PresenterFragment<ChatCont
             }
         });
         //拿到面板Fragment
-        mPanelFragment= (PanelFragment) getChildFragmentManager().findFragmentById(R.id.frag_panel);
+        mPanelFragment = (PanelFragment) getChildFragmentManager().findFragmentById(R.id.frag_panel);
         mPanelFragment.setup(this);
 
 
@@ -140,22 +149,57 @@ public abstract class ChatFragment<InitModel> extends PresenterFragment<ChatCont
         mRecycleView.setLayoutManager(new LinearLayoutManager(getContext()));
         mAdapter = new Adapter();
         mRecycleView.setAdapter(mAdapter);
+        //定位到最底部的消息
+
+
         //语言点击下载
         // TODO: 2020/2/5 将Item的点击事件抽离出去，长按用Dialog实现
         mAdapter.setListener(new RecyclerAdapter.AdapterListenerImpl<Message>() {
             @Override
             public void onItemClick(RecyclerAdapter.ViewHolder holder, Message message) {
-              if (message.getType()==Message.TYPE_AUDIO&&holder instanceof ChatFragment.AudioHolder){
-                  mAudioFileCache.download((ChatFragment.AudioHolder)holder,message.getContent());
-              }
+                if (message.getType() == Message.TYPE_AUDIO && holder instanceof ChatFragment.AudioHolder) {
+                    mAudioFileCache.download((ChatFragment.AudioHolder) holder, message.getContent());
+                }
             }
         });
+        //如果来自聊天会话界面，RecycleView需要设置一个marginBottom，否则最后一条不显示
+//        if (fromContact){
+//            CoordinatorLayout.LayoutParams params= (CoordinatorLayout.LayoutParams) mRecycleView.getLayoutParams();
+//            params.bottomMargin= (int) Ui.dipToPx(getResources(),50);//头像高度
+//            mRecycleView.setLayoutParams(params);
+//        }
+//         mRecycleView.setOnFlingListener(new RecyclerView.OnFlingListener() {
+//             @Override
+//             public boolean onFling(int velocityX, int velocityY) {
+//                 Log.i(TAG,"RecycleView bottom:");
+//                 if (((CoordinatorLayout.LayoutParams) mRecycleView.getLayoutParams()).bottomMargin!=0){
+//                     Log.i(TAG,"RecycleView bottom:2");
+//                     CoordinatorLayout.LayoutParams params= (CoordinatorLayout.LayoutParams) mRecycleView.getLayoutParams();
+//                     params.bottomMargin= (int) Ui.dipToPx(getResources(),0);//头像高度
+//                     mRecycleView.setLayoutParams(params);
+//                 }
+//                 return false;
+//             }
+//         });
 
     }
+
+    @Override
+    public void scrollToBottom(List<Message> dataList) {
+        if (dataList == null || mRecycleView == null) return;
+        Run.onUiAsync(new Action() {
+            @Override
+            public void call() {
+                Log.i(TAG,"dataSize:"+dataList.size()+"---"+mRecycleView.canScrollVertically(1));
+                mRecycleView.scrollToPosition(mAdapter.getItemCount()-1);
+            }
+        });
+    }
+
     //底部面板打开，头部折叠
-    private void onBottomPanelOpened(){
-        if (mAppbar!=null){
-            mAppbar.setExpanded(false,true);
+    private void onBottomPanelOpened() {
+        if (mAppbar != null) {
+            mAppbar.setExpanded(false, true);
         }
     }
 
@@ -170,10 +214,10 @@ public abstract class ChatFragment<InitModel> extends PresenterFragment<ChatCont
     public void onStart() {
         super.onStart();
 
-          mAudioPlayer=new AudioPlayHelper(new AudioPlayHelper.RecordPlayListener<AudioHolder>() {
+        mAudioPlayer = new AudioPlayHelper(new AudioPlayHelper.RecordPlayListener<AudioHolder>() {
             @Override
             public void onPlayStart(AudioHolder audioHolder) {
-              audioHolder.onPlayStart();
+                audioHolder.onPlayStart();
             }
 
             @Override
@@ -188,22 +232,21 @@ public abstract class ChatFragment<InitModel> extends PresenterFragment<ChatCont
         });
 
 
-
-
-         //下载工具类
-        mAudioFileCache=new FileCache("audio/cache", "mp3", new FileCache.CacheListener<ChatFragment.AudioHolder>() {
+        //下载工具类
+        mAudioFileCache = new FileCache("audio/cache", "mp3", new FileCache.CacheListener<ChatFragment.AudioHolder>() {
             @Override
             public void onDownloadSucceed(ChatFragment.AudioHolder audioHolder, File file) {
                 Run.onUiAsync(new Action() {
                     @Override
                     public void call() {
-                        mAudioPlayer.trigger(audioHolder,file.getAbsolutePath());
+                        mAudioPlayer.trigger(audioHolder, file.getAbsolutePath());
                     }
                 });
             }
+
             @Override
             public void onDownloadFailed(ChatFragment.AudioHolder audioHolder) {
-                    zApplication.showToast(R.string.toast_download_error);
+                zApplication.showToast(R.string.toast_download_error);
             }
 
         });
@@ -224,6 +267,10 @@ public abstract class ChatFragment<InitModel> extends PresenterFragment<ChatCont
     private void initAppbar() {
         mAppbar.addOnOffsetChangedListener(this);
     }
+
+
+
+
 
     /**
      * 输入框监听
@@ -254,23 +301,29 @@ public abstract class ChatFragment<InitModel> extends PresenterFragment<ChatCont
 
     @Override
     public void onRecordDone(File file, long time) {
-         mPresenter.pushAudio(file.getAbsolutePath(),time);
+        mPresenter.pushAudio(file.getAbsolutePath(), time);
     }
 
+    /**
+     * CollapsingToolbarLayout展开的时候，RecycleView定位到最后一条不对，需要设置一个marginBottom
+     * @param appBarLayout
+     * @param i
+     */
     @Override
     public void onOffsetChanged(AppBarLayout appBarLayout, int i) {
-
+              Log.i(TAG,"AppBarLayout current Pos:"+i);
     }
 
     /**
      * 拦截返回键
+     *
      * @return
      */
     @Override
     public boolean onBackPressed() {
-        if (mPanelBoss.isOpen()){//面板打开关闭面板，否则退出聊天界面
+        if (mPanelBoss.isOpen()) {//面板打开关闭面板，否则退出聊天界面
             mPanelBoss.closePanel();
-        }else{
+        } else {
             getActivity().finish();
         }
         return true;
@@ -314,10 +367,6 @@ public abstract class ChatFragment<InitModel> extends PresenterFragment<ChatCont
             onMoreClick();
         }
     }
-
-
-
-
 
     @Override
     public RecyclerAdapter<Message> getRecyclerAdapter() {
@@ -438,9 +487,9 @@ public abstract class ChatFragment<InitModel> extends PresenterFragment<ChatCont
         @Override
         protected void onBind(Message message) {
             super.onBind(message);
-            Spannable spannable=new SpannableString(message.getContent());
+            Spannable spannable = new SpannableString(message.getContent());
             //解析表情资源
-            Face.decode(mContent,spannable,(int) Ui.dipToPx(getResources(),20));
+            Face.decode(mContent, spannable, (int) Ui.dipToPx(getResources(), 20));
             //把内容设置到布局上
             mContent.setText(spannable);
 
@@ -462,14 +511,16 @@ public abstract class ChatFragment<InitModel> extends PresenterFragment<ChatCont
         @Override
         protected void onBind(Message message) {
             super.onBind(message);
-           String attach=TextUtils.isEmpty(message.getAttach())?"0":message.getAttach();
-           mContent.setText(formatTime(attach));
+            String attach = TextUtils.isEmpty(message.getAttach()) ? "0" : message.getAttach();
+            mContent.setText(formatTime(attach));
 
         }
-        void onPlayStart(){
+
+        void onPlayStart() {
             mAudioTrack.setVisibility(View.VISIBLE);
         }
-        void onPlayStop(){
+
+        void onPlayStop() {
             mAudioTrack.setVisibility(View.INVISIBLE);
         }
 
@@ -502,8 +553,8 @@ public abstract class ChatFragment<InitModel> extends PresenterFragment<ChatCont
         protected void onBind(Message message) {
             super.onBind(message);
             //当是图片类型的时候，content中就是具体的地址
-            String content=message.getContent();
-            RequestOptions options=new RequestOptions();
+            String content = message.getContent();
+            RequestOptions options = new RequestOptions();
             options.fitCenter();
             Glide.with(ChatFragment.this)
                     .load(content)

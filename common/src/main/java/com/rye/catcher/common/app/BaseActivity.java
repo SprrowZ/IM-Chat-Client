@@ -1,5 +1,6 @@
 package com.rye.catcher.common.app;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 
@@ -8,6 +9,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 
 import com.rye.catcher.common.widget.convention.PlaceHolderView;
+import com.rye.common.R;
 
 import java.util.List;
 
@@ -107,5 +109,14 @@ public abstract  class BaseActivity extends AppCompatActivity {
  */
     public void  setPlaceHolderView(PlaceHolderView placeHolderView){
         this.mPlaceHolderView=placeHolderView;
+    }
+
+    /**
+     * 左侧划出的动画
+     * @param intent
+     */
+    public void startActivityLeft(Intent intent){
+        overridePendingTransition(R.anim.activity_translate_out,R.anim.activity_translate_in);
+        super.startActivity(intent);
     }
 }

@@ -1,5 +1,7 @@
 package com.rye.factory.persenter.message;
 
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.rye.catcher.factory.presenter.BaseContract;
 import com.rye.factory.model.db.Group;
 import com.rye.factory.model.db.Message;
@@ -25,6 +27,9 @@ public interface ChatContract {
     //人、群初始化界面不同，所以需要传入泛型
     interface View<ViewModel> extends BaseContract.RecyclerView<Presenter,Message>{
         void  onInit(ViewModel model);
+        //当前当前界面的RecycleView，定位到最底部
+        void scrollToBottom(List<Message> dataList);
+
     }
     //人聊天的界面
     interface  UserView extends View<User>{

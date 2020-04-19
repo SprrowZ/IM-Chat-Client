@@ -11,10 +11,12 @@ import android.widget.ImageView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.graphics.drawable.DrawableCompat;
+import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
+import com.bumptech.glide.request.target.CustomViewTarget;
 import com.bumptech.glide.request.target.SimpleTarget;
 import com.bumptech.glide.request.transition.Transition;
 import com.rye.catcher.R;
@@ -23,6 +25,7 @@ import com.rye.catcher.frags.account.LoginFragment;
 
 import com.rye.catcher.frags.account.RegisterFragment;
 import com.rye.catcher.common.app.BaseActivity;
+import com.zzg.imgloader.ImageLoader;
 
 import net.qiujuer.genius.ui.compat.UiCompat;
 
@@ -60,23 +63,45 @@ public class AccountActivity extends BaseActivity implements AccountTrigger {
                 .add(R.id.lay_container,mCurFragment)
                 .commit();
 
+        ImageLoader.display(this, R.drawable.bg_src_tianjin, new CustomViewTarget<ImageView,Drawable>(mBg) {
+            @Override
+            protected void onResourceCleared(@Nullable Drawable placeholder) {
+            }
+
+            @Override
+            public void onLoadFailed(@Nullable Drawable errorDrawable) {
+            }
+
+            @Override
+            public void onResourceReady(@NonNull Drawable resource, @Nullable Transition<? super Drawable> transition) {
+                //拿到当前背景
+                Drawable drawable=resource.getCurrent();
+                drawable= DrawableCompat.wrap(drawable);
+                drawable.setColorFilter(UiCompat.getColor(getResources(),R.color.colorAccent),
+                        PorterDuff.Mode.SCREEN);
+                mBg.setImageDrawable(drawable);
+            }
+
+
+        });
+
         //初始化背景
-        RequestOptions options=new RequestOptions();
-        options.centerCrop();
-        Glide.with(this)
-                .load(R.drawable.bg_src_tianjin)
-                .apply(options)
-                .into(new SimpleTarget<Drawable>() {
-                    @Override
-                    public void onResourceReady(@NonNull Drawable resource, @Nullable Transition<? super Drawable> transition) {
-                        //拿到当前背景
-                        Drawable drawable=resource.getCurrent();
-                        drawable= DrawableCompat.wrap(drawable);
-                        drawable.setColorFilter(UiCompat.getColor(getResources(),R.color.colorAccent),
-                                PorterDuff.Mode.SCREEN);
-                        mBg.setImageDrawable(drawable);
-                    }
-    });
+//        RequestOptions options=new RequestOptions();
+//        options.centerCrop();
+//        Glide.with(this)
+//                .load(R.drawable.bg_src_tianjin)
+//                .apply(options)
+//                .into(new SimpleTarget<Drawable>() {
+//                    @Override
+//                    public void onResourceReady(@NonNull Drawable resource, @Nullable Transition<? super Drawable> transition) {
+//                        //拿到当前背景
+//                        Drawable drawable=resource.getCurrent();
+//                        drawable= DrawableCompat.wrap(drawable);
+//                        drawable.setColorFilter(UiCompat.getColor(getResources(),R.color.colorAccent),
+//                                PorterDuff.Mode.SCREEN);
+//                        mBg.setImageDrawable(drawable);
+//                    }
+//    });
 
     }
 

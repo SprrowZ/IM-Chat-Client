@@ -96,5 +96,6 @@ public class ChatPresenter<View extends ChatContract.View>
         final DiffUtil.DiffResult result = DiffUtil.calculateDiff(callback);
         //进行界面刷新
         refreshData(result, messages);
+        view.scrollToBottom(messages);
     }
 }

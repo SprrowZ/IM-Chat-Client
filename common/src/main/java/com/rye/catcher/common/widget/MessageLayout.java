@@ -31,6 +31,7 @@ public class MessageLayout extends AirPanelLinearLayout {
         super(context, attrs, defStyleAttr);
     }
 
+    // TODO: 2020/2/10 沉浸式不用覆写这个 
     @Override
     protected boolean fitSystemWindows(Rect insets) {
         if (Build.VERSION.SDK_INT>=Build.VERSION_CODES.KITKAT){
@@ -38,8 +39,8 @@ public class MessageLayout extends AirPanelLinearLayout {
             insets.top=0;
             insets.right=0;
         }
-        
+
         return super.fitSystemWindows(insets);
-        
+
     }
 }

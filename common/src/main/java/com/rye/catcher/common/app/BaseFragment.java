@@ -1,6 +1,7 @@
 package com.rye.catcher.common.app;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 
 import android.view.LayoutInflater;
@@ -12,6 +13,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.rye.catcher.common.widget.convention.PlaceHolderView;
+import com.rye.common.R;
 
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
@@ -119,5 +121,12 @@ public abstract class BaseFragment extends Fragment {
         this.mPlaceHolderView=placeHolderView;
     }
 
-
+    /**
+     * 左侧划出的动画
+     * @param intent
+     */
+    public void startActivityLeft(Intent intent){
+        super.startActivity(intent);
+        getActivity().overridePendingTransition(R.anim.activity_translate_out,R.anim.activity_translate_in);
+    }
 }

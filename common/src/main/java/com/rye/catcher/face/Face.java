@@ -13,6 +13,7 @@ import android.text.SpannableString;
 import android.text.TextUtils;
 import android.text.style.ImageSpan;
 import android.util.ArrayMap;
+import android.util.Log;
 import android.view.View;
 
 import androidx.annotation.NonNull;
@@ -211,6 +212,7 @@ public class Face {
 
     //从Spannable中解析表情并替换显示
     public static Spannable decode(@NonNull View target, final Spannable spannable, final int size) {
+        Log.i("zzsize",String.valueOf(size));
         if (spannable == null)
             return null;
         String str = spannable.toString();

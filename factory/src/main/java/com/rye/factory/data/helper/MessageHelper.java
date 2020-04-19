@@ -5,7 +5,7 @@ import android.os.SystemClock;
 import android.text.TextUtils;
 import android.util.Log;
 
-import com.bumptech.glide.Glide;
+
 import com.raizlabs.android.dbflow.list.IFlowCursorIterator;
 import com.raizlabs.android.dbflow.sql.language.OperatorGroup;
 import com.raizlabs.android.dbflow.sql.language.SQLite;
