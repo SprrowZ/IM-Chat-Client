@@ -28,8 +28,8 @@ class LogInterceptor : Interceptor {
             contentType?.charset(UTF8)
             reqBody = buffer.readString(UTF8)
         }
-        Log.e(TAG, "请求方式：${request.method()} \n  请求地址：${request.url()} \n " +
-                "请求头：${request.headers()} \n  请求内容：$reqBody \n")
+        Log.e(TAG, "请求方式：${request.method()}\n请求地址：${request.url()}\n" +
+                "请求头：${request.headers()}\n请求内容：$reqBody\n")
 
         val response = chain.proceed(request)
         val responseBody = response.body()
@@ -49,8 +49,8 @@ class LogInterceptor : Interceptor {
             }
             respBody = buffer.clone().readString(charset)
         }
-        Log.e(TAG,"响应结果：${response.code()} -- ${response.message()} \n" +
-                "请求地址：${response.request().url()} \n  请求内容：$reqBody \n 响应结果：$respBody \n")
+        Log.e(TAG,"响应结果：${response.code()} -- ${response.message()}\n" +
+                "请求地址：${response.request().url()}\n请求内容：$reqBody\n响应结果：$respBody\n")
         return response
     }
 }
