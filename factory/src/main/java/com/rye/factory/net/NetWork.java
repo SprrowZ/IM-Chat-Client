@@ -1,6 +1,7 @@
 package com.rye.factory.net;
 
 import android.text.TextUtils;
+import android.util.Log;
 
 import com.rye.catcher.common.Common;
 import com.rye.factory.persistence.Account;
@@ -54,6 +55,7 @@ public class NetWork {
 
                     return chain.proceed(newRequest);
                 })
+                .addInterceptor(new LogInterceptor())
                 .build();
         return instance.client;
     }
@@ -71,20 +73,18 @@ public class NetWork {
                 .connectTimeout(10, TimeUnit.SECONDS)
                 .writeTimeout(10, TimeUnit.SECONDS)
                 .readTimeout(20, TimeUnit.SECONDS)
-                .addInterceptor(new Interceptor() {
-                    @Override
-                    public Response intercept(Chain chain) throws IOException {
-                        Request original = chain.request();
-                        Request.Builder builder = original.newBuilder();
-                        if (!TextUtils.isEmpty(Account.getToken())) {
-                            builder.addHeader("token", Account.getToken());
-                        }
-                        builder.addHeader("Content-Type", "application/json");
-                        Request newRequest = builder.build();
-
-                        return chain.proceed(newRequest);
+                .addInterceptor(chain -> {
+                    Request original = chain.request();
+                    Request.Builder builder = original.newBuilder();
+                    if (!TextUtils.isEmpty(Account.getToken())) {
+                        builder.addHeader("token", Account.getToken());
                     }
+                    builder.addHeader("Content-Type", "application/json");
+                    Request newRequest = builder.build();
+
+                    return chain.proceed(newRequest);
                 })
+                .addInterceptor(new LogInterceptor())
                 .build();
 
         instance.client = client;
