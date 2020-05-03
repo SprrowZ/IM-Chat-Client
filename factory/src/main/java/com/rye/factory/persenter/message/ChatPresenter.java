@@ -33,7 +33,6 @@ public class ChatPresenter<View extends ChatContract.View>
 
     @Override
     public void pushText(String content) {
-
         MsgCreateModel model = new MsgCreateModel.Builder()
                 .receiver(mReceiverId, mReceiverType)
                 .content(content, Message.TYPE_STR)

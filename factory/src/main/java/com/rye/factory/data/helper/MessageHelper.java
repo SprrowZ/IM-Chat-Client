@@ -53,13 +53,12 @@ public class MessageHelper {
      * @param model
      */
     public static void push(final MsgCreateModel model) {
-        Factory.runOnAsync(() -> { // TODO: 2020/1/29 可以换个线程池？
+        Factory.runOnAsync(() -> { // TODO: 2020/1/29 可以换个线程池
             //成功状态：如果是一个已经发送过的消息，则不能重新发送
             //正在发送状态：如果是一个消息正在发送，则不能重新发送
             Message message = findFromLocal(model.getId());
             if (message != null && message.getStatus() != Message.STATUS_FAILED)
                 return;
-
             final MessageCard card = model.buildCard();
             Factory.getMessageCenter().dispatch(card);
 
@@ -93,10 +92,6 @@ public class MessageHelper {
 
                }
            }
-
-
-
-
             //直接发送
             RemoteService service = NetWork.remote();
             service.msgPush(model).enqueue(new Callback<RspModel<MessageCard>>() {

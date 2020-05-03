@@ -11,7 +11,7 @@ public class Common {
         //手机号正则
         String REGEX_MOBILE = "[1][3,4,5,7,8][0-9]{9}$";
         // TODO: 2020/1/5 不要忘了替换本机ip地址--- 
-        String API_URL = "http://192.168.124.9:8080/api/";
+        String API_URL = "http://192.168.125.116:8080/api/";
 
         //最大的上传图片的大小为860kb
         long MAX_UPLOAD_IMAGE_LENGTH = 860 * 1024;

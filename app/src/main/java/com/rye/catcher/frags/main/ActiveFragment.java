@@ -5,15 +5,21 @@ import android.app.Fragment;
 import android.text.Spannable;
 import android.text.SpannableString;
 import android.text.TextUtils;
+import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.google.android.material.navigation.NavigationView;
 import com.rye.catcher.R;
 
+import com.rye.catcher.activities.AccountActivity;
 import com.rye.catcher.activities.MessageActivity;
 
 import com.rye.catcher.common.app.PresenterFragment;
@@ -27,6 +33,7 @@ import com.rye.factory.model.db.Session;
 
 import com.rye.factory.persenter.message.SessionContract;
 import com.rye.factory.persenter.message.SessionPresenter;
+import com.rye.factory.persistence.Account;
 
 import net.qiujuer.genius.ui.Ui;
 
@@ -42,7 +49,11 @@ implements SessionContract.View {
     EmptyView emptyView;
     @BindView(R.id.recycler)
     RecyclerView mRecycleView;
+    @BindView(R.id.navigation)
+    NavigationView mNavigation;
+    RelativeLayout leftDetails;
     private RecyclerAdapter<Session> mAdapter;
+
     public ActiveFragment() {
         // Required empty public constructor
     }
@@ -77,6 +88,28 @@ implements SessionContract.View {
 
         emptyView.bind(mRecycleView);
         setPlaceHolderView(emptyView);
+        leftDetails = (RelativeLayout) mNavigation.inflateHeaderView(R.layout.left_details);
+        TextView userName=leftDetails.findViewById(R.id.userName);
+        userName.setText(Account.getUser().getName());
+        leftDetails.findViewById(R.id.left_first).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mPresenter.logout();
+            }
+        });
+//        mNavigation.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
+//            @Override
+//            public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
+//                menuItem.setChecked(true);
+//                switch (menuItem.getItemId()){
+//                    case R.id.left_first:
+//                        mPresenter.logout();
+//                        break;
+//                }
+//                return false;
+//            }
+//        });
+
     }
 
     @Override
@@ -105,6 +138,12 @@ implements SessionContract.View {
     @Override
     public void onAdapterDataChanged() {
        mPlaceHolderView.triggerOkOrEmpty(mAdapter.getItemCount()>0);
+    }
+
+    @Override
+    public void logoutSuccess() {
+        AccountActivity.show(getContext());
+        getActivity().finish();
     }
 
 

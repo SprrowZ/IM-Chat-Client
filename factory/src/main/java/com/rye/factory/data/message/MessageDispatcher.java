@@ -53,7 +53,6 @@ public class MessageDispatcher implements MessageCenter {
         MessageCardHandler(MessageCard[] cards){
             this.cards=cards;
         }
-
         // TODO: 2020/1/25 -----------重要逻辑，需要多加关注
         @RequiresApi(api = Build.VERSION_CODES.N)
         @Override

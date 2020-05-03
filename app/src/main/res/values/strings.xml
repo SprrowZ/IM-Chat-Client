@@ -3,4 +3,10 @@
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="codeName">RyeCatcher</string>
+    <string name="left_first">天行九歌</string>
+    <string name="left_second">秦时明月</string>
+    <string name="left_third">空山鸟语</string>
+    <string name="left_fourth">百步穿杨</string>
+    <string name="left_fivth">纵横捭阖</string>
 </resources>
