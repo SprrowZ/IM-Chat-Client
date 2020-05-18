@@ -12,6 +12,7 @@ import com.rye.factory.model.card.GroupCard;
 import com.rye.factory.model.card.GroupMemberCard;
 import com.rye.factory.model.card.MessageCard;
 import com.rye.factory.model.card.UserCard;
+import com.rye.factory.model.db.GroupMember;
 
 import java.util.List;
 
@@ -147,4 +148,7 @@ public interface RemoteService {
      */
     @POST("group/{groupId}/member")
     Call<RspModel<List<GroupMemberCard>>> groupMemberAdd(@Path("groupId") String groupId, GroupMemberAddModel model);
+
+    @POST("group//applyJoin/{groupId}")
+    Call<RspModel<GroupMemberCard>> joinGroup(@Path("groupId") String groupId,GroupMemberAddModel model);
 }
