@@ -33,8 +33,6 @@ public class RegisterPresenter extends BasePresenter<RegisterContract.View>
         start();
         //得到View接口
         RegisterContract.View view = getView();
-
-
         //校验
         if (!checkMobile(phone)) {
             //提示

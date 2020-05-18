@@ -1,11 +1,14 @@
 package com.rye.factory.persenter.message;
 
+import android.content.Context;
+
 import androidx.recyclerview.widget.DiffUtil;
 
 import com.rye.factory.data.message.SessionDataSource;
 import com.rye.factory.data.message.SessionRepository;
 import com.rye.factory.model.db.Session;
 import com.rye.factory.persenter.BaseSourcePresenter;
+import com.rye.factory.persistence.Account;
 import com.rye.factory.utils.DiffUiDataCallback;
 
 import java.util.List;
@@ -30,5 +33,14 @@ public class SessionPresenter extends BaseSourcePresenter<Session, Session,
         DiffUiDataCallback<Session> callback=new DiffUiDataCallback<>(old,sessions);
         DiffUtil.DiffResult result=DiffUtil.calculateDiff(callback);
         refreshData(result,sessions);
+    }
+
+    @Override
+    public void logout() {
+        SessionContract.View view=getView();
+        if (view==null)
+            return;
+        Account.logout();
+        view.logoutSuccess();
     }
 }

@@ -90,7 +90,6 @@ public class AccountHelper {
                AccountRspModel accountRspModel = rspModel.getResult();
                User user = accountRspModel.getUser();
                DbHelper.save(User.class,user);
-               // TODO: 2020/1/11 待了解所有的DBFlow存储方法
                //同步到sp中
                Account.login(accountRspModel);
                //判断绑定设备
