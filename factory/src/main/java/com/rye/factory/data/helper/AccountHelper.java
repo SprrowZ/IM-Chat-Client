@@ -85,7 +85,7 @@ public class AccountHelper {
            //请求成功
            RspModel<AccountRspModel> rspModel = response.body();
            if (rspModel==null) return;
-           Log.e("ACCOUNT_ERROR","onSuccess:isSuccess"+response.isSuccessful() +"\n--message"+rspModel.getMessage());
+           Log.e("ACCOUNT_ERROR","onSuccess--isSuccess："+response.isSuccessful() +"\n--message："+rspModel.getMessage());
            if (rspModel.success()) {
                AccountRspModel accountRspModel = rspModel.getResult();
                User user = accountRspModel.getUser();
@@ -113,7 +113,7 @@ public class AccountHelper {
            //请求失败
            if (callback!=null){
                callback.onDataNotAvailable(R.string.data_network_error);
-               Log.e("ACCOUNT_ERROR", "onFailure"+t.getMessage());
+               Log.e("ACCOUNT_ERROR", "onFailure："+t.getMessage());
            }
 
        }

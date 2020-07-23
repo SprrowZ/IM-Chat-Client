@@ -15,6 +15,7 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.rye.catcher.R;
+import com.rye.catcher.activities.MessageActivity;
 import com.rye.catcher.activities.PersonalActivity;
 import com.rye.catcher.activities.SearchActivity;
 import com.rye.catcher.common.app.BaseFragment;
@@ -23,8 +24,10 @@ import com.rye.catcher.common.widget.EmptyView;
 import com.rye.catcher.common.widget.PortraitView;
 import com.rye.catcher.common.widget.recycler.RecyclerAdapter;
 import com.rye.catcher.factory.presenter.BaseContract;
+import com.rye.factory.data.helper.UserHelper;
 import com.rye.factory.model.card.GroupCard;
 import com.rye.factory.model.card.UserCard;
+import com.rye.factory.model.db.Group;
 import com.rye.factory.persenter.contact.FollowContract;
 import com.rye.factory.persenter.contact.FollowPresenter;
 import com.rye.factory.persenter.search.SearchContract;
@@ -44,7 +47,7 @@ import butterknife.OnClick;
  * A simple {@link Fragment} subclass.
  */
 public class SearchGroupFragment extends PresenterFragment<SearchContract.Presenter>
-        implements SearchActivity.SearchFragment,SearchContract.GroupView {
+        implements SearchActivity.SearchFragment, SearchContract.GroupView {
 
     @BindView(R.id.empty)
     EmptyView emptyView;
@@ -63,6 +66,7 @@ public class SearchGroupFragment extends PresenterFragment<SearchContract.Presen
     public void search(String content) {
         mPresenter.search(content);
     }
+
     @Override
     protected void initData() {
         super.initData();
@@ -74,7 +78,7 @@ public class SearchGroupFragment extends PresenterFragment<SearchContract.Presen
     protected void initWidget(View root) {
         super.initWidget(root);
         mRecycleView.setLayoutManager(new LinearLayoutManager(getContext()));
-        mRecycleView.setAdapter( mAdapter=new RecyclerAdapter<GroupCard>(){
+        mRecycleView.setAdapter(mAdapter = new RecyclerAdapter<GroupCard>() {
 
             @Override
             protected int getItemViewType(int position, GroupCard groupCard) {
@@ -92,7 +96,6 @@ public class SearchGroupFragment extends PresenterFragment<SearchContract.Presen
     }
 
 
-
     @Override
     protected SearchContract.Presenter initPresenter() {
         return new SearchGroupPresenter(this);
@@ -101,9 +104,8 @@ public class SearchGroupFragment extends PresenterFragment<SearchContract.Presen
     @Override
     public void onSearchDone(List<GroupCard> groupCards) {
         mAdapter.replace(groupCards);
-        mPlaceHolderView.triggerOkOrEmpty(mAdapter.getItemCount()>0);
+        mPlaceHolderView.triggerOkOrEmpty(mAdapter.getItemCount() > 0);
     }
-
 
 
     class ViewHolder extends RecyclerAdapter.ViewHolder<GroupCard> {
@@ -114,25 +116,25 @@ public class SearchGroupFragment extends PresenterFragment<SearchContract.Presen
         @BindView(R.id.im_join)
         ImageView mJoin;
         private FollowContract.Presenter mFollowPresenter;
+
         public ViewHolder(View itemView) {
             super(itemView);
         }
 
         @Override
         protected void onBind(GroupCard groupCard) {
-            mPortraitView.setUp(Glide.with(SearchGroupFragment.this),groupCard.getPicture());
+            mPortraitView.setUp(Glide.with(SearchGroupFragment.this), groupCard.getPicture());
             mName.setText(groupCard.getName());
             //加入时间判断是否可以键入群
-            mJoin.setEnabled(groupCard.getJoinAt()==null);
+            mJoin.setEnabled(groupCard.getJoinAt() == null);
         }
+
         @OnClick(R.id.im_join)
-        void onJoinClick(){
+        void onJoinClick() {
+            //TODO ---进入群聊
             //进入创建者的个人界面
-            PersonalActivity.show(getContext(),mData.getOwnerId());
+            //   PersonalActivity.show(getContext(),mData.getOwnerId());
+            MessageActivity.show(getContext(), mData.build(UserHelper.search(mData.getId())));
         }
-
-
     }
-
-
 }
