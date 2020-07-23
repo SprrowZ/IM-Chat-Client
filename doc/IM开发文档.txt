@@ -1,13 +1,4 @@
-﻿推送相关账户：（个推）
-包名：com.rye.catcher
-AppID：hxPXGY2KE58Paa8tew7AU2
-AppSecret：ypoPVzqvwc90joJlfFCF62
-AppKey：hv6H9Rrizf5rIdZ3YgIoS8
-MasterSecret：hkzVLAbnvpAnvw0sV4l6m9
-
-阿里账号：
-AccessKey ID：LTAIq8qfyarbwdZx 
-Access Key Secret：xDtCGVVIsB6eiEBd5z9aU9clHv3xzm
+﻿
 
 ###Git Tag相关操作
 -git tag
