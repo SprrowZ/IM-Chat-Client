@@ -32,8 +32,7 @@ public class UpLoadHelper {
     private static OSS getClient(){
 
         // 在移动端建议使用STS的方式初始化OSSClient。-----少了个参数，先用老师这个把
-        OSSCredentialProvider credentialProvider = new OSSPlainTextAKSKCredentialProvider("LTAIq8qfyarbwdZx",
-                "sGttQvzH0etPN4zBan2RkiXlAy1WWe");
+        OSSCredentialProvider credentialProvider = new OSSPlainTextAKSKCredentialProvider("","");
         ClientConfiguration conf = new ClientConfiguration();
         conf.setConnectionTimeout(15 * 1000); // 连接超时，默认15秒。
         conf.setSocketTimeout(15 * 1000); // socket超时，默认15秒。
